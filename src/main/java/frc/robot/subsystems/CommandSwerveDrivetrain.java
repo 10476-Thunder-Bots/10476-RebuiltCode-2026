@@ -30,6 +30,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.generated.RobotConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+import limelight.Limelight;
+import limelight.networktables.AngularVelocity3d;
+import limelight.networktables.LimelightPoseEstimator;
+import limelight.networktables.Orientation3d;
+import limelight.networktables.LimelightPoseEstimator.EstimationMode;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -39,6 +44,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+
+    private Vision camera = new Vision();
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -261,6 +268,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
 
+        camera.update();
         dashbaordValues();
     }
 
@@ -370,5 +378,35 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 config,
                 this::allianceCheck,
                 this);
+    }
+    private class Vision {
+        private Limelight leftLimeLight;
+        private Limelight rightLimeLight;
+        private LimelightPoseEstimator leftEstimator;
+        private LimelightPoseEstimator rightEstimator;
+        private Orientation3d orientation;
+
+        Vision(){
+            leftLimeLight = new Limelight(RobotConstants.LimeLight.LEFT_LIMELIGHT_NAME);
+            rightLimeLight = new Limelight(RobotConstants.LimeLight.RIGHT_LIMELIGHT_NAME);
+            setVisionMeasurementStdDevs(RobotConstants.LimeLight.STD_DEVS);
+            leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
+            rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
+        }
+        public void update(){
+            var angularVelocity = new AngularVelocity3d(DegreesPerSecond.of(getPigeon2().getAngularVelocityXWorld().getValueAsDouble()),
+                DegreesPerSecond.of(getPigeon2().getAngularVelocityYWorld().getValueAsDouble()),
+                DegreesPerSecond.of(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()));
+            orientation = new Orientation3d(getRotation3d(),angularVelocity);
+            leftLimeLight.getSettings().withRobotOrientation(orientation);
+            rightLimeLight.getSettings().withRobotOrientation(orientation);
+            
+            if(!leftEstimator.getPoseEstimate().isEmpty()){
+                addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(), leftEstimator.getPoseEstimate().get().timestampSeconds);
+            }
+            if(!rightEstimator.getPoseEstimate().isEmpty()){
+                addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(), leftEstimator.getPoseEstimate().get().timestampSeconds);
+            }
+        }
     }
 }
