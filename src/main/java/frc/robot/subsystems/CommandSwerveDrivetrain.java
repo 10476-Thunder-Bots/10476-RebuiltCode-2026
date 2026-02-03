@@ -125,6 +125,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private final SwerveRequest.ApplyRobotSpeeds autoRequest = new SwerveRequest.ApplyRobotSpeeds();
     private RobotConfig config;
+
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
      * <p>
@@ -145,38 +146,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configurePathPlanner();
-        RobotConfig config;
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
-    
-    // Configure AutoBuilder last
-    AutoBuilder.configure(
-            this::getPose, // Robot pose supplier
-            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> this.setControl(autoRequest.withSpeeds(speeds)), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),
-            config, // The robot configuration
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
-              return false;
-            },
-            this // Reference to this subsystem to set requirements
-    );
     }
 
     /**
@@ -413,6 +382,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 this::allianceCheck,
                 this);
     }
+
     private class Vision {
         private Limelight leftLimeLight;
         private Limelight rightLimeLight;
@@ -420,29 +390,34 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         private LimelightPoseEstimator rightEstimator;
         private Orientation3d orientation;
 
-        Vision(){
+        Vision() {
             leftLimeLight = new Limelight(RobotConstants.LimeLight.LEFT_LIMELIGHT_NAME);
             rightLimeLight = new Limelight(RobotConstants.LimeLight.RIGHT_LIMELIGHT_NAME);
             setVisionMeasurementStdDevs(RobotConstants.LimeLight.STD_DEVS);
             leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
             rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
         }
-        public void update(){
-            var angularVelocity = new AngularVelocity3d(DegreesPerSecond.of(getPigeon2().getAngularVelocityXWorld().getValueAsDouble()),
-                DegreesPerSecond.of(getPigeon2().getAngularVelocityYWorld().getValueAsDouble()),
-                DegreesPerSecond.of(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()));
-            orientation = new Orientation3d(getRotation3d(),angularVelocity);
+
+        public void update() {
+            var angularVelocity = new AngularVelocity3d(
+                    DegreesPerSecond.of(getPigeon2().getAngularVelocityXWorld().getValueAsDouble()),
+                    DegreesPerSecond.of(getPigeon2().getAngularVelocityYWorld().getValueAsDouble()),
+                    DegreesPerSecond.of(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()));
+            orientation = new Orientation3d(getRotation3d(), angularVelocity);
             leftLimeLight.getSettings().withRobotOrientation(orientation);
             rightLimeLight.getSettings().withRobotOrientation(orientation);
-            
-            if(!leftEstimator.getPoseEstimate().isEmpty()){
-                addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(), leftEstimator.getPoseEstimate().get().timestampSeconds);
+
+            if (!leftEstimator.getPoseEstimate().isEmpty()) {
+                addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
+                        leftEstimator.getPoseEstimate().get().timestampSeconds);
             }
-            if(!rightEstimator.getPoseEstimate().isEmpty()){
-                addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(), leftEstimator.getPoseEstimate().get().timestampSeconds);
+            if (!rightEstimator.getPoseEstimate().isEmpty()) {
+                addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
+                        leftEstimator.getPoseEstimate().get().timestampSeconds);
             }
         }
     }
+
     private ChassisSpeeds getRobotRelativeSpeeds() {
         return null;
     }
