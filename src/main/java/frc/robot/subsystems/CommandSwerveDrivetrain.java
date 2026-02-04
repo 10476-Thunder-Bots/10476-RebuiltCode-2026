@@ -411,7 +411,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
                         leftEstimator.getPoseEstimate().get().timestampSeconds);
             }
-            if (!(rightEstimator.getPoseEstimate().get().tagCount == 0)) {
+            if (!(rightEstimator.getPoseEstimate().get().tagCount == 0)&&!rightEstimator.getPoseEstimate().isEmpty()) {
                 addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
                         leftEstimator.getPoseEstimate().get().timestampSeconds);
             }
