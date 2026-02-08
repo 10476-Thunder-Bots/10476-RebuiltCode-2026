@@ -6,6 +6,8 @@ import static edu.wpi.first.units.Units.Radians;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,9 +28,9 @@ public class Dashboard extends SubsystemBase {
         SmartDashboard.putNumber("Turret Angle", getTurretSetpoint().in(Degrees));
      }  
     public Angle getTurretSetpoint(){
-        return Radians.of(Math.atan2(drivetrain.getState().Pose.getX()-RobotConstants.Turret.HUB_X, 
-            drivetrain.getState().Pose.getY()-RobotConstants.Turret.HUB_Y) 
-        - drivetrain.getState().Pose.getRotation().getRadians());
+        Translation2d toTarget = RobotConstants.Turret.HUB.minus(drivetrain.getState().Pose.getTranslation());
+        Rotation2d aimAngle = new Rotation2d(Math.atan2(toTarget.getY(), toTarget.getX()));
+        return aimAngle.minus(drivetrain.getPigeon2().getRotation2d()).getMeasure();
     }
     public double getDistanceFromHub(){
         return Math.sqrt(Math.pow(drivetrain.getState().Pose.getY()-RobotConstants.Turret.HUB_Y, 2)+Math.pow(drivetrain.getState().Pose.getX()-RobotConstants.Turret.HUB_X,2));
