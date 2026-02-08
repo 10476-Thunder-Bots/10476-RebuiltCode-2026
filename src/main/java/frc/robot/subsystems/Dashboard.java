@@ -24,11 +24,12 @@ public class Dashboard extends SubsystemBase {
         SmartDashboard.putNumber("Turret Angle", getTurretSetpoint().in(Radians));
      }  
      public Angle getTurretSetpoint(){
-        return Angle.ofBaseUnits(Math.atan2(drivetrain.getState().Pose.getY()-4.0, drivetrain.getState().Pose.getX()-4.622) 
+        return Angle.ofBaseUnits(Math.atan2(drivetrain.getState().Pose.getY()-RobotConstants.Turret.HUB_Y, 
+            drivetrain.getState().Pose.getX()-RobotConstants.Turret.HUB_X) 
         - drivetrain.getState().Pose.getRotation().getRadians(), Radians);
     }
     public double getDistanceFromHub(){
-        return Math.sqrt(Math.pow(drivetrain.getState().Pose.getY()-5, 2)+Math.pow(drivetrain.getState().Pose.getX(), -5));
+        return Math.sqrt(Math.pow(drivetrain.getState().Pose.getY()-RobotConstants.Turret.HUB_Y, 2)+Math.pow(drivetrain.getState().Pose.getX()-RobotConstants.Turret.HUB_X,2));
     }
         
 }
