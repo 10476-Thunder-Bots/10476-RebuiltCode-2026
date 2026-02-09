@@ -407,14 +407,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             leftLimeLight.getSettings().withRobotOrientation(orientation).save();
             rightLimeLight.getSettings().withRobotOrientation(orientation).save();
 
-            if (!(leftEstimator.getPoseEstimate().get().tagCount == 0)&&!leftEstimator.getPoseEstimate().isEmpty()) {
-                addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        leftEstimator.getPoseEstimate().get().timestampSeconds);
-            }
-            if (!(rightEstimator.getPoseEstimate().get().tagCount == 0)&&!rightEstimator.getPoseEstimate().isEmpty()) {
-                addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        leftEstimator.getPoseEstimate().get().timestampSeconds);
-            }
+            // if (!(leftEstimator.getPoseEstimate().get().tagCount ==
+            // 0)&&!leftEstimator.getPoseEstimate().isEmpty()) {
+            // addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
+            // leftEstimator.getPoseEstimate().get().timestampSeconds);
+            // }
+            // if (!(rightEstimator.getPoseEstimate().get().tagCount ==
+            // 0)&&!rightEstimator.getPoseEstimate().isEmpty()) {
+            // addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
+            // leftEstimator.getPoseEstimate().get().timestampSeconds);
+            // }
         }
     }
 
