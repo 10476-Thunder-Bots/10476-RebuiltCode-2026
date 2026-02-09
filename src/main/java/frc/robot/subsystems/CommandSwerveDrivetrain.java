@@ -403,17 +403,17 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                     DegreesPerSecond.of(getPigeon2().getAngularVelocityXWorld().getValueAsDouble()),
                     DegreesPerSecond.of(getPigeon2().getAngularVelocityYWorld().getValueAsDouble()),
                     DegreesPerSecond.of(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()));
-            orientation = new Orientation3d(getRotation3d(), angularVelocity);
+            orientation = new Orientation3d(getPigeon2().getRotation3d(), angularVelocity);
             leftLimeLight.getSettings().withRobotOrientation(orientation).save();
             rightLimeLight.getSettings().withRobotOrientation(orientation).save();
 
-            if (!(leftEstimator.getPoseEstimate().get().tagCount == 0)&&!leftEstimator.getPoseEstimate().isEmpty()) {
+            if (!(leftEstimator.getPoseEstimate().isEmpty())&&!(leftEstimator.getPoseEstimate().get().tagCount == 0)) {
                 addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
                         leftEstimator.getPoseEstimate().get().timestampSeconds);
             }
-            if (!(rightEstimator.getPoseEstimate().get().tagCount == 0)&&!rightEstimator.getPoseEstimate().isEmpty()) {
+            if (!(rightEstimator.getPoseEstimate().isEmpty())&&!(rightEstimator.getPoseEstimate().get().tagCount == 0)) {
                 addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        leftEstimator.getPoseEstimate().get().timestampSeconds);
+                        rightEstimator.getPoseEstimate().get().timestampSeconds);
             }
         }
     }
