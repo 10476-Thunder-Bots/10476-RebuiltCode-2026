@@ -407,14 +407,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             leftLimeLight.getSettings().withRobotOrientation(orientation).save();
             rightLimeLight.getSettings().withRobotOrientation(orientation).save();
 
-            if (!leftEstimator.getPoseEstimate().isEmpty()&&!(leftEstimator.getPoseEstimate().get().tagCount == 0)) {
-                addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        leftEstimator.getPoseEstimate().get().timestampSeconds);
-            }
-            if (!rightEstimator.getPoseEstimate().isEmpty()&&!(rightEstimator.getPoseEstimate().get().tagCount == 0)) {
-                addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        leftEstimator.getPoseEstimate().get().timestampSeconds);
-            }
+            //
         }
     }
 
