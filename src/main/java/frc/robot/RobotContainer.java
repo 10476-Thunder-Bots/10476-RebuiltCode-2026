@@ -88,8 +88,8 @@ public class RobotContainer {
         // Note that each routine should be run exactly once in a single log.
         dancepad.button(3).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         dancepad.button(2).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        dancepad.button(6).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        dancepad.button(7).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        dancepad.button(1).whileTrue(drivetrain.applyRequest(() -> drive.withVelocityX(MaxSpeed / 2)));
+        dancepad.button(4).whileTrue(drivetrain.applyRequest(() -> drive.withVelocityX(-MaxSpeed / 2)));
 
         // reset the field-centric heading on left bumper press
         joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
