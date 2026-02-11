@@ -15,25 +15,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.generated.RobotConstants;
 
-public class Dashboard extends SubsystemBase { 
+public class Dashboard extends SubsystemBase {
     private CommandSwerveDrivetrain drivetrain;
+    private Turret turret;
 
-    public Dashboard(CommandSwerveDrivetrain drivetrain){
+    public Dashboard(CommandSwerveDrivetrain drivetrain, Turret turret) {
         this.drivetrain = drivetrain;
+        this.turret = turret;
     }
-
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Turret Angle", getTurretSetpoint().in(Degrees));
-     }  
-    public Angle getTurretSetpoint(){
-        Translation2d toTarget = RobotConstants.Turret.HUB.minus(drivetrain.getState().Pose.getTranslation());
-        Rotation2d aimAngle = new Rotation2d(Math.atan2(toTarget.getY(), toTarget.getX()));
-        return aimAngle.minus(drivetrain.getPigeon2().getRotation2d()).getMeasure();
+        SmartDashboard.putNumber("Turret Angle", turret.getTurretSetpoint().in(Degrees));
     }
-    public double getDistanceFromHub(){
-        return Math.sqrt(Math.pow(drivetrain.getState().Pose.getY()-RobotConstants.Turret.HUB_Y, 2)+Math.pow(drivetrain.getState().Pose.getX()-RobotConstants.Turret.HUB_X,2));
-    }
-}
 
+}

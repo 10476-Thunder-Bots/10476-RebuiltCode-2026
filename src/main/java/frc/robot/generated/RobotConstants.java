@@ -17,7 +17,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
-
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public final class RobotConstants {
     public static class Autos {
@@ -32,11 +32,21 @@ public final class RobotConstants {
         private static final double THEATA_STD_DEV = 1.5;
         public static final Matrix<N3, N1> STD_DEVS = VecBuilder.fill(XY_STD_DEV, XY_STD_DEV, THEATA_STD_DEV);
     }
+
     public static class Turret {
-        @SuppressWarnings("unlikely-arg-type")
-        public static final double HUB_X = DriverStation.getAlliance().equals(DriverStation.Alliance.Blue) ? 4.625 : 12;
+        private static final boolean allianceCheck = DriverStation.getAlliance().isPresent();
+        private static final Alliance ALLIANCE = allianceCheck ? DriverStation.getAlliance().get()
+                : DriverStation.Alliance.Red;
+        public static final double HUB_X = ALLIANCE.equals(DriverStation.Alliance.Blue) ? 4.625
+                : 12;
         public static final double HUB_Y = 4;
+        public static final double TRENCH_X = ALLIANCE.equals(DriverStation.Alliance.Blue) ? 2
+                : 14;
+        public static final double UPPER_TRENCH_Y = 6;
+        public static final double LOWER_TRENCH_Y = 1.5;
         public static final Translation2d HUB = new Translation2d(HUB_X, HUB_Y);
+        public static final Translation2d UPPER_TRENCH = new Translation2d(TRENCH_X, UPPER_TRENCH_Y);
+        public static final Translation2d LOWER_TRENCH = new Translation2d(TRENCH_X, LOWER_TRENCH_Y);
         public static final int ENCODER_ID = 0;
         public static final int TURRET_CAN_ID = 27;
         public static final double TURRET_KP = 9;
