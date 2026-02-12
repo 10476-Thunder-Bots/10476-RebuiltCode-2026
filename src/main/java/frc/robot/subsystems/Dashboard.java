@@ -29,4 +29,35 @@ public class Dashboard extends SubsystemBase {
         SmartDashboard.putNumber("Turret Angle", turret.getTurretSetpoint().in(Degrees));
     }
 
+       public double getShootVelocity(){
+        // just defining some constants.
+        double x = RobotConstants.Turret.HUB_X - drivetrain.getState().Pose.getX();
+        double y = RobotConstants.Turret.HUB_Y - drivetrain.getState().Pose.getY();
+        double w = 1.3;
+        double theta = Math.toRadians(85);
+        double x2 = Math.pow(x, 2);
+        double y2 = Math.pow(y, 2);
+        double g = -9.8;
+        double getDistanceFromHub = Math.sqrt(x2 + y2);
+        // formula
+        
+        double top = (Math.pow(g,2))*(x2 + y2);
+        double bottom = -((2*(g)*(getDistanceFromHub)*Math.tan(theta))-(2*g*w)) * Math.pow(Math.cos(theta), 2);
+        double fullFraction = top/bottom;
+        return Math.sqrt(fullFraction);
+    }
+
+        public double shootAngle(){
+            double x = RobotConstants.Turret.HUB_X - drivetrain.getState().Pose.getX();
+            double y = RobotConstants.Turret.HUB_Y - drivetrain.getState().Pose.getY();
+            double Vx = drivetrain.getChassisSpeeds().vxMetersPerSecond;
+            double Vy = drivetrain.getChassisSpeeds().vyMetersPerSecond;
+            double rho = Math.atan(y/x);
+            double Vix = getShootVelocity() * Math.cos(rho) - Vx;
+            double Viy = getShootVelocity() * Math.sin(rho) - Vy;
+            double thetaI = Math.toDegrees(Math.atan(Viy/Vix));
+            return thetaI;
+
+        }
+
 }
