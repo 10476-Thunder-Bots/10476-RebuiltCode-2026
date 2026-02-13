@@ -44,9 +44,11 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public final Turret turret = new Turret(drivetrain);
+    
 
-    public final Dashboard dashboard = new Dashboard(drivetrain, turret);
+    public final Dashboard dashboard = new Dashboard(drivetrain);
+
+    public final Turret turret = new Turret(drivetrain, dashboard);
 
     private final SendableChooser<Command> autoChooser;
 

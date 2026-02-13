@@ -51,8 +51,10 @@ public class Turret extends SubsystemBase {
     private PivotConfig pConfig;
     private Pivot pivot;
     private CommandSwerveDrivetrain drivetrain;
+    private Dashboard dashboard;
 
-    public Turret(CommandSwerveDrivetrain drivetrain) {
+    public Turret(CommandSwerveDrivetrain drivetrain, Dashboard dashboard) {
+        this.dashboard = dashboard;
         this.drivetrain = drivetrain;
         turretController = new PIDController(RobotConstants.Turret.TURRET_KP, RobotConstants.Turret.TURRET_KI,
                 RobotConstants.Turret.TURRET_KD);
@@ -96,27 +98,8 @@ public class Turret extends SubsystemBase {
     }
 
     public Angle getTurretSetpoint() {
-        Rotation2d aimAngle = new Rotation2d(Math.atan2(getTarget().getY(), getTarget().getX()));
+        Rotation2d aimAngle = dashboard.shootAngle();
         return aimAngle.minus(drivetrain.getPigeon2().getRotation2d()).getMeasure();
     }
 
-    private Translation2d getTarget() {
-        if (DriverStation.getAlliance().isPresent()
-                && DriverStation.getAlliance().get().equals(DriverStation.Alliance.Blue)) {
-            if (drivetrain.getState().Pose.getX() < RobotConstants.Turret.HUB_X) {
-                return RobotConstants.Turret.HUB.minus(drivetrain.getState().Pose.getTranslation());
-            }
-            if (drivetrain.getState().Pose.getY() >= RobotConstants.Turret.HUB_Y) {
-                return RobotConstants.Turret.UPPER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
-            }
-            return RobotConstants.Turret.LOWER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
-        }
-        if (drivetrain.getState().Pose.getX() > RobotConstants.Turret.HUB_X) {
-            return RobotConstants.Turret.HUB.minus(drivetrain.getState().Pose.getTranslation());
-        }
-        if (drivetrain.getState().Pose.getY() >= RobotConstants.Turret.HUB_Y) {
-            return RobotConstants.Turret.UPPER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
-        }
-        return RobotConstants.Turret.LOWER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
-    }
 }
