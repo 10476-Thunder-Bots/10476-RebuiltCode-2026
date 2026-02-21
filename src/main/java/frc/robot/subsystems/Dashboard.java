@@ -73,13 +73,13 @@ public class Dashboard extends SubsystemBase {
             double y2 = 0;
             double x1 = 0;
             double x2 = 0;
-            double x = getShootVelocity();
+            double y = getShootVelocity();
 
             double m = (y2-y1) / (x2 -x1);
             
-            double y = y1 + (x-x1)*m;
+            double x = ((y-y1) * m) + x1;
 
-            return y;
+            return x;
 
         }
 }
