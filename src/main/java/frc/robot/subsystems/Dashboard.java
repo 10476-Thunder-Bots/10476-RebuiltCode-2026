@@ -66,4 +66,20 @@ public class Dashboard extends SubsystemBase {
         }
         return RobotConstants.Turret.LOWER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
     }
+
+    public double linearInterpolation(){
+            // this is just a template and serves no current use
+            double y1 = 0;
+            double y2 = 0;
+            double x1 = 0;
+            double x2 = 0;
+            double x = getShootVelocity();
+
+            double m = (y2-y1) / (x2 -x1);
+            
+            double y = y1 + (x-x1)*m;
+
+            return y;
+
+        }
 }
