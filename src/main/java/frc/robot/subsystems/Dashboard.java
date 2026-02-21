@@ -77,7 +77,7 @@ public class Dashboard extends SubsystemBase {
 
             double m = (y2-y1) / (x2 -x1);
             
-            double x = ((y-y1) * m) + x1;
+            double x = ((y-y1) / m) + x1;
 
             return x;
 
