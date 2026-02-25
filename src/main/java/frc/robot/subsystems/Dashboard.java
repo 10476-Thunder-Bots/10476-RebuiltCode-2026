@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.RPM;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.generated.RobotConstants;
@@ -67,7 +70,7 @@ public class Dashboard extends SubsystemBase {
         return RobotConstants.Turret.LOWER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
     }
 
-    public double linearInterpolation(){
+    public  AngularVelocity linearInterpolation(){
             // this is just a template and serves no current use
             double y1 = 0;
             double y2 = 0;
@@ -79,7 +82,7 @@ public class Dashboard extends SubsystemBase {
             
             double x = ((y-y1) / m) + x1;
 
-            return x;
+            return AngularVelocity.ofBaseUnits(x, RPM);
 
         }
 }
