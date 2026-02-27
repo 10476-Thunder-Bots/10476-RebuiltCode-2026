@@ -40,6 +40,8 @@ import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
 import yams.motorcontrollers.remote.TalonFXWrapper;
+
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
 
 public class Turret extends SubsystemBase {
@@ -64,8 +66,8 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        swivel.updateTelemetry();
-        swivel.runSetPoint();
+        //swivel.updateTelemetry();
+        //swivel.runSetPoint();
         shooter.periodic();
         
     }
@@ -136,7 +138,7 @@ public class Turret extends SubsystemBase {
 
     private class Shooter {
         SmartMotorControllerConfig smartMotorControllerConfig;
-        private SparkMax flywheelMotor;
+        private SparkFlex flywheelMotor;
         private SmartMotorController motor;
         private FlyWheelConfig fConfig;
         private FlyWheel shooter;
@@ -150,21 +152,21 @@ public class Turret extends SubsystemBase {
                 // Gearing from the motor rotor to final shaft.
                 // In this example GearBox.fromReductionStages(3,4) is the same as GearBox.fromStages("3:1","4:1") which corresponds to the gearbox attached to your motor.
                 // You could also use .withGearing(12) which does the same thing.
-                .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4)))
+                .withGearing(new MechanismGearing(GearBox.fromReductionStages(1)))
                 // Motor properties to prevent over currenting.
                 .withMotorInverted(false)
                 .withIdleMode(MotorMode.COAST)
                 .withStatorCurrentLimit(Amps.of(40))
-                .withFollowers(Pair.of(new SparkMax(0, MotorType.kBrushless), true));
+                .withFollowers(Pair.of(new SparkFlex(15, MotorType.kBrushless), true));
                 
-                flywheelMotor = new SparkMax(30, MotorType.kBrushless);
-                motor = new SparkWrapper(flywheelMotor, DCMotor.getNEO(2), smartMotorControllerConfig);
+                flywheelMotor = new SparkFlex(16, MotorType.kBrushless);
+                motor = new SparkWrapper(flywheelMotor, DCMotor.getNeoVortex(2), smartMotorControllerConfig);
 
                 fConfig = new FlyWheelConfig(motor)
                 // Diameter of the flywheel.
                 .withDiameter(Inches.of(4))
                 // Mass of the flywheel.
-                .withMass(Pounds.of(1))
+                .withMass(Pounds.of(5))
                 // Telemetry name and verbosity for the arm.
                 .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH)
                 .disableSpeedometerSimulation();
@@ -179,8 +181,8 @@ public class Turret extends SubsystemBase {
             return shooter.set(dutyCycle);
         }
 
-        private AngularVelocity getVelocity(){
-            return shooter.getSpeed();
+        private LinearVelocity getVelocity(){
+            return shooter.getLinearVelocity();
         }
         
   
@@ -192,7 +194,7 @@ public class Turret extends SubsystemBase {
         public void periodic() {
             // This method will be called once per scheduler run
             shooter.updateTelemetry();
-            SmartDashboard.putNumber("Shooter Speed", getVelocity().in(RPM));
+            SmartDashboard.putNumber("Shooter Speed", getVelocity().in(MetersPerSecond));
         }
 
         public void simulationPeriodic() {

@@ -48,7 +48,7 @@ public final class RobotConstants {
         public static final Translation2d UPPER_TRENCH = new Translation2d(TRENCH_X, UPPER_TRENCH_Y);
         public static final Translation2d LOWER_TRENCH = new Translation2d(TRENCH_X, LOWER_TRENCH_Y);
         public static final int ENCODER_ID = 0;
-        public static final int TURRET_CAN_ID = 27;
+        public static final int TURRET_CAN_ID = 14;
         public static final double TURRET_KP = 9;
         public static final double TURRET_KI = 0;
         public static final double TURRET_KD = .5;
