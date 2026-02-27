@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,6 +53,13 @@ public class Turret extends SubsystemBase {
         shooter = new Shooter(this);
         this.dashboard = dashboard;
         this.drivetrain = drivetrain;
+    }
+
+    public Command setShooterSpeed(LinearVelocity speed){
+        return shooter.setVelocity(speed);
+    }
+    public Command set(double dutyCycle){
+        return shooter.set(dutyCycle);
     }
 
     @Override
@@ -135,11 +144,7 @@ public class Turret extends SubsystemBase {
             smartMotorControllerConfig = new SmartMotorControllerConfig(turret)
                 .withControlMode(ControlMode.CLOSED_LOOP)
                 // Feedback Constants (PID Constants)
-                .withClosedLoopController(15, 0, 0 )
-                .withSimClosedLoopController(15, 0, 0)
-                // Feedforward Constants
-                .withFeedforward(new SimpleMotorFeedforward(0, 0, 0))
-                .withSimFeedforward(new SimpleMotorFeedforward(0, 0, 0))
+                .withClosedLoopController(.01, 0, 0 )
                 // Telemetry name and verbosity level
                 .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
                 // Gearing from the motor rotor to final shaft.
@@ -161,17 +166,18 @@ public class Turret extends SubsystemBase {
                 // Mass of the flywheel.
                 .withMass(Pounds.of(1))
                 // Telemetry name and verbosity for the arm.
-                .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH);
-
+                .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH)
+                .disableSpeedometerSimulation();
                 shooter = new FlyWheel(fConfig);
 
             }
         
-        private void setVelocitySetpoint(AngularVelocity speed){
-            shooter.setMechanismVelocitySetpoint(speed);
-            
-        }private Command setVeolicty(AngularVelocity speed){return shooter.setSpeed(speed);}
-
+        public Command setVelocity(LinearVelocity speed) {
+            return run(() ->shooter.setMeasurementVelocitySetpoint(speed));
+        }
+        public Command set(double dutyCycle) {
+            return shooter.set(dutyCycle);
+        }
 
         private AngularVelocity getVelocity(){
             return shooter.getSpeed();
@@ -186,7 +192,6 @@ public class Turret extends SubsystemBase {
         public void periodic() {
             // This method will be called once per scheduler run
             shooter.updateTelemetry();
-            setVelocitySetpoint(AngularVelocity.ofBaseUnits((10)/(Math.PI*.1),RPM));
             SmartDashboard.putNumber("Shooter Speed", getVelocity().in(RPM));
         }
 

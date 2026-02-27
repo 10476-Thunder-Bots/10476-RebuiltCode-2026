@@ -54,7 +54,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureBindings();
-
+        
         autoChooser = AutoBuilder.buildAutoChooser();
 
         SmartDashboard.putData("autoChooser", autoChooser);
@@ -83,6 +83,8 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
+        turret.setDefaultCommand(turret.set(0));
+
         joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.button(1).whileTrue(drivetrain
                 .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getY(), -joystick.getX()))));
@@ -96,6 +98,8 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        joystick.button(7).whileTrue(turret.setShooterSpeed(MetersPerSecond.of(dashboard.getShootVelocity())));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

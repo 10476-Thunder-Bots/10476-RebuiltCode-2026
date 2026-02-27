@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.generated.RobotConstants;
 
@@ -18,6 +19,7 @@ public class Dashboard extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Shoot Vel", getShootVelocity());
     }
 
     public double getShootVelocity() {
