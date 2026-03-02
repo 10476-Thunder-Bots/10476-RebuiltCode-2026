@@ -5,28 +5,21 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
 
-import org.opencv.core.Mat;
-
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.generated.RobotConstants;
+import frc.robot.RobotConstants;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.FlyWheelConfig;
@@ -42,19 +35,26 @@ import yams.motorcontrollers.local.SparkWrapper;
 import yams.motorcontrollers.remote.TalonFXWrapper;
 
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkLowLevel;
 
 public class Turret extends SubsystemBase {
     private Swivel swivel;
     private Shooter shooter;
     private CommandSwerveDrivetrain drivetrain;
     private Dashboard dashboard;
+    private static Turret turret = null;
 
-    public Turret(CommandSwerveDrivetrain drivetrain, Dashboard dashboard) {
+    // Singleton instance
+    public static Turret getInstance(){
+        if (turret == null) {
+            turret = new Turret();
+        }
+        return turret;
+    }
+
+    private Turret() {
         swivel = new Swivel(this);
         shooter = new Shooter(this);
-        this.dashboard = dashboard;
-        this.drivetrain = drivetrain;
+        dashboard = Dashboard.getInstance();
     }
 
     public Command setShooterSpeed(LinearVelocity speed){
@@ -150,8 +150,6 @@ public class Turret extends SubsystemBase {
                 // Telemetry name and verbosity level
                 .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
                 // Gearing from the motor rotor to final shaft.
-                // In this example GearBox.fromReductionStages(3,4) is the same as GearBox.fromStages("3:1","4:1") which corresponds to the gearbox attached to your motor.
-                // You could also use .withGearing(12) which does the same thing.
                 .withGearing(new MechanismGearing(GearBox.fromReductionStages(1)))
                 // Motor properties to prevent over currenting.
                 .withMotorInverted(false)
@@ -175,7 +173,7 @@ public class Turret extends SubsystemBase {
             }
         
         public Command setVelocity(LinearVelocity speed) {
-            return run(() ->shooter.setMeasurementVelocitySetpoint(speed));
+            return shooter.run(speed);
         }
         public Command set(double dutyCycle) {
             return shooter.set(dutyCycle);

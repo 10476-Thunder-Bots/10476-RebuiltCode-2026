@@ -8,15 +8,23 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.generated.RobotConstants;
+import frc.robot.RobotConstants;
 
 public class Dashboard extends SubsystemBase {
     private CommandSwerveDrivetrain drivetrain;
 
-    public Dashboard(CommandSwerveDrivetrain drivetrain) {
-        this.drivetrain = drivetrain;
-    }
+    private static Dashboard dashboard = null;
 
+    public static Dashboard getInstance(){
+        if (dashboard == null) {
+            dashboard = new Dashboard();
+        }
+        return dashboard;
+    }
+    private Dashboard() {
+        drivetrain = CommandSwerveDrivetrain.getInstance();
+    }
+    
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Shoot Vel", getShootVelocity());

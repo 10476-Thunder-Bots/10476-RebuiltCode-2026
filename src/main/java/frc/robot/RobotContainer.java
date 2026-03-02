@@ -14,16 +14,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-//import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.Dashboard;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
 
 public class RobotContainer {
@@ -42,13 +40,13 @@ public class RobotContainer {
 
     private final CommandJoystick joystick = new CommandJoystick(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
-    
+    private final Intake intake = Intake.getInstace();
 
-    public final Dashboard dashboard = new Dashboard(drivetrain);
+    public final Dashboard dashboard = Dashboard.getInstance();
 
-    public final Turret turret = new Turret(drivetrain, dashboard);
+    public final Turret turret = Turret.getInstance();
 
     private final SendableChooser<Command> autoChooser;
 
@@ -72,9 +70,9 @@ public class RobotContainer {
                                 Math.copySign(Math.pow(-joystick.getZ(), 2), -joystick.getZ()) * MaxAngularRate) // Drive
                                                                                                                  // counterclockwise
                                                                                                                  // with
-                                                                                                                 // negative
+                                                                                                                  // negative
                                                                                                                  // X
-                                                                                                                 // (left)
+                                                                                                                // (left)
                 ));
 
         // Idle while the robot is disabled. This ensures the configured
@@ -84,7 +82,7 @@ public class RobotContainer {
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
         turret.setDefaultCommand(turret.set(0));
-
+        intake.setDefaultCommand(intake.runIntake(0));
         joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.button(1).whileTrue(drivetrain
                 .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getY(), -joystick.getX()))));
@@ -99,7 +97,9 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.button(7).whileTrue(turret.setShooterSpeed(MetersPerSecond.of(dashboard.getShootVelocity())));
+        joystick.button(7).whileTrue(turret.setShooterSpeed(MetersPerSecond.of(20*2)));
+
+        joystick.button(7).whileTrue(intake.runIntake(.5));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
