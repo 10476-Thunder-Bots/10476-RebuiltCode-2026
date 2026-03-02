@@ -419,7 +419,4 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
 
-    private ChassisSpeeds getRobotRelativeSpeeds() {
-        return null;
-    }
 }

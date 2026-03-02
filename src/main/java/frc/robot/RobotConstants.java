@@ -1,5 +1,6 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 
@@ -10,6 +11,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -50,5 +52,7 @@ public final class RobotConstants {
         public static final double TURRET_KD = .5;
         public static final AngularVelocity TURRET_MAX_VEL = DegreesPerSecond.of(590);
         public static final AngularAcceleration TURRET_MAX_ACC = DegreesPerSecondPerSecond.of(46000);
+        public static final double GRAVITY = -9.81;
+        public static final Angle LAUNCH_ANGLE = Degrees.of(85);
     }
 }
