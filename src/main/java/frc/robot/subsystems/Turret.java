@@ -5,9 +5,14 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.Pair;
@@ -79,33 +84,43 @@ public class Turret extends SubsystemBase {
     }
 
     private class Swivel {
-        private PIDController turretController;
-        private TalonFX turretMotor;
-        private SmartMotorControllerConfig motorConfig;
-        private SmartMotorController motor;
-        private PivotConfig pConfig;
-        private Pivot pivot;
-
-        private Swivel(Turret turret) {
-            turretController = new PIDController(RobotConstants.Turret.TURRET_KP, RobotConstants.Turret.TURRET_KI,
-                    RobotConstants.Turret.TURRET_KD);
-            turretController.disableContinuousInput();
-            turretMotor = new TalonFX(RobotConstants.Turret.TURRET_CAN_ID);
-            motorConfig = new SmartMotorControllerConfig(turret)
-                    .withControlMode(ControlMode.CLOSED_LOOP)
-                    .withClosedLoopController(RobotConstants.Turret.TURRET_KP, RobotConstants.Turret.TURRET_KI,
-                            RobotConstants.Turret.TURRET_KD, RobotConstants.Turret.TURRET_MAX_VEL,
-                            RobotConstants.Turret.TURRET_MAX_ACC)
-                    .withGearing(new MechanismGearing(GearBox.fromReductionStages(9)))
-                    .withIdleMode(MotorMode.BRAKE)
-                    .withMotorInverted(false)
-                    .withTelemetry("TurretMotor", TelemetryVerbosity.HIGH)
-                    .withStatorCurrentLimit(Amps.of(40))
-                    .withClosedLoopRampRate(Seconds.of((.25)))
-                    .withOpenLoopRampRate(Seconds.of((.25)));
-            // .withExternalEncoder(new AnalogEncoder(RobotConstants.Turret.ENCODER_ID,
-            // 10.0, 0));
-            motor = new TalonFXWrapper(turretMotor, DCMotor.getKrakenX60(1), motorConfig);
+                private PIDController turretController;
+                private TalonFX turretMotor;
+                private SmartMotorControllerConfig motorConfig;
+                private SmartMotorController motor;
+                private TalonFXConfiguration motorConfig1;
+                private PivotConfig pConfig;
+                private Pivot pivot;
+                Slot0Configs Slot0Configs = new Slot0Configs()
+                    .withKA(RobotConstants.Turret.TURRET_MAX_ACC.in(RotationsPerSecondPerSecond))
+                    .withKV(RobotConstants.Turret.TURRET_MAX_VEL.in(RotationsPerSecond))
+                    .withKD(RobotConstants.Turret.TURRET_KD)
+                    .withKI(RobotConstants.Turret.TURRET_KI)
+                    .withKP(RobotConstants.Turret.TURRET_KP);                                                                                                                
+        
+                private Swivel(Turret turret) {
+                    turretController = new PIDController(RobotConstants.Turret.TURRET_KP, RobotConstants.Turret.TURRET_KI,
+                            RobotConstants.Turret.TURRET_KD);
+                    turretController.disableContinuousInput();
+                    turretMotor = new TalonFX(RobotConstants.Turret.TURRET_CAN_ID);
+                    motorConfig = new SmartMotorControllerConfig(turret)
+                            .withControlMode(ControlMode.CLOSED_LOOP)
+                            .withClosedLoopController(RobotConstants.Turret.TURRET_KP, RobotConstants.Turret.TURRET_KI,
+                                    RobotConstants.Turret.TURRET_KD, RobotConstants.Turret.TURRET_MAX_VEL,
+                                    RobotConstants.Turret.TURRET_MAX_ACC)
+                            .withGearing(new MechanismGearing(GearBox.fromReductionStages(9)))
+                            .withIdleMode(MotorMode.BRAKE)
+                            .withMotorInverted(false)
+                            .withTelemetry("TurretMotor", TelemetryVerbosity.HIGH)
+                            .withStatorCurrentLimit(Amps.of(40))
+                            .withClosedLoopRampRate(Seconds.of((.25)))
+                            .withOpenLoopRampRate(Seconds.of((.25)));
+                    motorConfig1 = new TalonFXConfiguration().withSlot0(Slot0Configs);
+                        motorConfig1.CurrentLimits.SupplyCurrentLimit = 40;
+                        motorConfig1.CurrentLimits.StatorCurrentLimitEnable =true;
+                        motorConfig1.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+                    
+                    turretMotor.getConfigurator().apply(motorConfig1);
             pConfig = new PivotConfig(motor)
                     .withStartingPosition(Degrees.of(0))
                     .withTelemetry("TurretPivot", TelemetryVerbosity.HIGH)
