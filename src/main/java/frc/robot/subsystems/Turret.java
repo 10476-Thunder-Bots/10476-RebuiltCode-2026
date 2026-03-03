@@ -121,12 +121,14 @@ public class Turret extends SubsystemBase {
                         motorConfig1.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
                     
                     turretMotor.getConfigurator().apply(motorConfig1);
+                    motor = new TalonFXWrapper(turretMotor, DCMotor.getKrakenX60(1), motorConfig);
             pConfig = new PivotConfig(motor)
                     .withStartingPosition(Degrees.of(0))
                     .withTelemetry("TurretPivot", TelemetryVerbosity.HIGH)
                     .withHardLimit(Degrees.of(-180), Degrees.of(180))
                     .withMOI(Inches.of(4), Pounds.of(2.72));
             pivot = new Pivot(pConfig);
+
         }
 
         private Angle getTurretSetpoint() {
