@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -21,91 +22,107 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Dashboard;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Turret.Intake;
+import frc.robot.subsystems.Turret.Swivel;
+import frc.robot.subsystems.Turret.Shooter;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
-                                                                                      // max angular velocity
+        private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
+                                                                                      // speed
+        private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per
+                                                                                          // second
+                                                                                          // max angular velocity
 
-    /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+        /* Setting up bindings for necessary control of the swerve drive platform */
+        private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+                        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+                        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive
+                                                                                 // motors
+        private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+        private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+        private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandJoystick joystick = new CommandJoystick(0);
+        private final CommandJoystick joystick = new CommandJoystick(0);
 
-    public final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
+        public final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
-    private final Intake intake = Intake.getInstace();
+        private final Intake intake = Intake.getInstance();
 
-    public final Dashboard dashboard = Dashboard.getInstance();
+        public final Dashboard dashboard = Dashboard.getInstance();
 
-    public final Turret turret = Turret.getInstance();
+        public final Swivel swivel = Swivel.getInstance();
 
-    private final SendableChooser<Command> autoChooser;
+        public final Shooter shooter = Shooter.getInstance();
+        private final SendableChooser<Command> autoChooser;
 
-    public RobotContainer() {
-        configureBindings();
-        
-        autoChooser = AutoBuilder.buildAutoChooser();
+        public RobotContainer() {
+                configureBindings();
 
-        SmartDashboard.putData("autoChooser", autoChooser);
-    }
+                autoChooser = AutoBuilder.buildAutoChooser();
 
-    private void configureBindings() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-                // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getY() * MaxSpeed) // Drive forward with
-                                                                                               // negative Y (forward)
-                        .withVelocityY(joystick.getX() * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(
-                                Math.copySign(Math.pow(-joystick.getZ(), 2), -joystick.getZ()) * MaxAngularRate) // Drive
-                                                                                                                 // counterclockwise
-                                                                                                                 // with
-                                                                                                                  // negative
-                                                                                                                 // X
-                                                                                                                // (left)
-                ));
+                SmartDashboard.putData("autoChooser", autoChooser);
+        }
 
-        // Idle while the robot is disabled. This ensures the configured
-        // neutral mode is applied to the drive motors while disabled.
-        final var idle = new SwerveRequest.Idle();
-        RobotModeTriggers.disabled().whileTrue(
-                drivetrain.applyRequest(() -> idle).ignoringDisable(true));
+        private void configureBindings() {
 
-        turret.setDefaultCommand(turret.set(0));
-        intake.setDefaultCommand(intake.runIntake(0));
-        joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.button(1).whileTrue(drivetrain
-                .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getY(), -joystick.getX()))));
+                // Note that X is defined as forward according to WPILib convention,
+                // and Y is defined as to the left according to WPILib convention.
+                drivetrain.setDefaultCommand(
+                                // Drivetrain will execute this command periodically
+                                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getY() * MaxSpeed) // Drive
+                                                                                                               // forward
+                                                                                                               // with
+                                                                                                               // negative
+                                                                                                               // Y
+                                                                                                               // (forward)
+                                                .withVelocityY(-joystick.getX() * MaxSpeed) // Drive left with negative
+                                                                                            // X (left)
+                                                .withRotationalRate(
+                                                                Math.copySign(Math.pow(-joystick.getZ(), 2),
+                                                                                -joystick.getZ()) * MaxAngularRate) // Drive
+                                                                                                                    // counterclockwise
+                                                                                                                    // with
+                                                                                                                    // negative
+                                                                                                                    // X
+                                                                                                                    // (left)
+                                ));
 
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+                // Idle while the robot is disabled. This ensures the configured
+                // neutral mode is applied to the drive motors while disabled.
+                final var idle = new SwerveRequest.Idle();
+                RobotModeTriggers.disabled().whileTrue(
+                                drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-        // reset the field-centric heading on left bumper press
+                shooter.setDefaultCommand(shooter.set(0));
+                swivel.setDefaultCommand(swivel.setDutyCycle(0));
+                intake.setDefaultCommand(intake.setIntake(0));
+                joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
+                joystick.button(1).whileTrue(drivetrain
+                                .applyRequest(() -> point.withModuleDirection(
+                                                new Rotation2d(-joystick.getY(), -joystick.getX()))));
 
-        joystick.button(7).whileTrue(turret.set(.65));
-;
+                // Run SysId routines when holding back/start and X/Y.
+                // Note that each routine should be run exactly once in a single log.
+                joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+                joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+                joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+                joystick.button(1).and(joystick.trigger()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        joystick.button(7).whileTrue(intake.runIntake(.75));
+                // reset the field-centric heading on button 6 press
+                joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        drivetrain.registerTelemetry(logger::telemeterize);
+                joystick.button(4).whileTrue(swivel.runSwivel());
 
-    }
+                joystick.button(7).whileTrue(shooter.set(.65));
 
-    public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
-    }
+                joystick.button(7).whileTrue(CompositeCommands.runIntake());
+
+                drivetrain.registerTelemetry(logger::telemeterize);
+
+        }
+
+        public Command getAutonomousCommand() {
+                return autoChooser.getSelected();
+        }
 }
