@@ -95,7 +95,6 @@ public class RobotContainer {
                                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
                 shooter.setDefaultCommand(shooter.set(0));
-                swivel.setDefaultCommand(swivel.setDutyCycle(0));
                 intake.setDefaultCommand(intake.setIntake(0));
                 joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
                 joystick.button(1).whileTrue(drivetrain
@@ -111,8 +110,6 @@ public class RobotContainer {
 
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
-                joystick.button(4).whileTrue(swivel.runSwivel());
 
                 joystick.button(7).whileTrue(shooter.set(.65));
 
