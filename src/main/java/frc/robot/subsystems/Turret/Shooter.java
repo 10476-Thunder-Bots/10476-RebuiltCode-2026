@@ -15,6 +15,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotConstants;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.FlyWheelConfig;
@@ -47,7 +48,7 @@ public class Shooter extends SubsystemBase {
         smartMotorControllerConfig = new SmartMotorControllerConfig(this)
                 .withControlMode(ControlMode.CLOSED_LOOP)
                 // Feedback Constants (PID Constants)
-                .withClosedLoopController(.01, 0, 0)
+                .withClosedLoopController(RobotConstants.ShooterConstants.SHOOTER_KP, 0, 0)
                 // Telemetry name and verbosity level
                 .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
                 // Gearing from the motor rotor to final shaft.
@@ -56,9 +57,10 @@ public class Shooter extends SubsystemBase {
                 .withMotorInverted(false)
                 .withIdleMode(MotorMode.COAST)
                 .withStatorCurrentLimit(Amps.of(40))
-                .withFollowers(Pair.of(new SparkFlex(15, MotorType.kBrushless), true));
+                .withFollowers(Pair.of(
+                        new SparkFlex(RobotConstants.ShooterConstants.FOLLOWER_CAN_ID, MotorType.kBrushless), true));
 
-        flywheelMotor = new SparkFlex(16, MotorType.kBrushless);
+        flywheelMotor = new SparkFlex(RobotConstants.ShooterConstants.SHOOTER_CAN_ID, MotorType.kBrushless);
         motor = new SparkWrapper(flywheelMotor, DCMotor.getNeoVortex(2), smartMotorControllerConfig);
 
         fConfig = new FlyWheelConfig(motor)
@@ -73,17 +75,17 @@ public class Shooter extends SubsystemBase {
 
     }
 
-    public Command setVelocity(AngularVelocity speed) {
-        return flywheel.run(speed);
+    public void setVelocity(LinearVelocity speed) {
+        flywheel.setMeasurementVelocitySetpoint(speed);
     }
 
     public Command set(double dutyCycle) {
         return flywheel.set(dutyCycle);
     }
 
-    private AngularVelocity getVelocity() {
-        return flywheel.getSpeed();}
-    
+    private LinearVelocity getVelocity() {
+        return flywheel.getLinearVelocity();
+    }
 
     private Boolean shooterReady() {
         return true;// TODO: Add check to see if shooter meets conditions to fire
@@ -93,7 +95,7 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         flywheel.updateTelemetry();
-        SmartDashboard.putNumber("Shooter Speed", getVelocity().in(RPM));
+        SmartDashboard.putNumber("Shooter Speed", getVelocity().in(MetersPerSecond));
     }
 
     @Override

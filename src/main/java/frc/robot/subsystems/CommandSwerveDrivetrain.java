@@ -64,12 +64,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private static CommandSwerveDrivetrain drivetrain = null;
 
-    public static CommandSwerveDrivetrain getInstance(){
+    public static CommandSwerveDrivetrain getInstance() {
         if (drivetrain == null) {
             drivetrain = TunerConstants.createDrivetrain();
         }
         return drivetrain;
     }
+
     /*
      * SysId routine for characterizing translation. This is used to find PID gains
      * for the drive motors.
@@ -415,11 +416,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             leftLimeLight.getSettings().withRobotOrientation(orientation).save();
             rightLimeLight.getSettings().withRobotOrientation(orientation).save();
 
-            if (!(leftEstimator.getPoseEstimate().isEmpty())&&!(leftEstimator.getPoseEstimate().get().tagCount == 0)) {
+            if (!(leftEstimator.getPoseEstimate().isEmpty())
+                    && !(leftEstimator.getPoseEstimate().get().tagCount == 0)) {
                 addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
                         leftEstimator.getPoseEstimate().get().timestampSeconds);
             }
-            if (!(rightEstimator.getPoseEstimate().isEmpty())&&!(rightEstimator.getPoseEstimate().get().tagCount == 0)) {
+            if (!(rightEstimator.getPoseEstimate().isEmpty())
+                    && !(rightEstimator.getPoseEstimate().get().tagCount == 0)) {
                 addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
                         rightEstimator.getPoseEstimate().get().timestampSeconds);
             }

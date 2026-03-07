@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -23,8 +22,8 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.Turret.Intake;
-import frc.robot.subsystems.Turret.Swivel;
 import frc.robot.subsystems.Turret.Shooter;
+import frc.robot.subsystems.Turret.Swivel;
 
 public class RobotContainer {
         private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -95,6 +94,7 @@ public class RobotContainer {
                                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
                 shooter.setDefaultCommand(shooter.set(0));
+                swivel.setDefaultCommand(swivel.setdutyCycle(0));
                 intake.setDefaultCommand(intake.setIntake(0));
                 joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
                 joystick.button(1).whileTrue(drivetrain
@@ -111,13 +111,13 @@ public class RobotContainer {
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-                //joystick.button(7).whileTrue(shooter.setVelocity(RPM.of(5000*2)));
+                joystick.button(4).whileTrue(shooter
+                                .run(() -> shooter.setVelocity(MetersPerSecond.of(dashboard.getShootVelocity()))));
 
-                //joystick.button(7).whileTrue(CompositeCommands.runIntake());
+                joystick.button(7).whileTrue(CompositeCommands.runIntake());
 
-                joystick.button(7).whileTrue(swivel.runSetPoint(Degrees.of(90)));
+                joystick.button(4).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
 
-                //swivel.setDefaultCommand(swivel.setdutyCycle(0));
                 drivetrain.registerTelemetry(logger::telemeterize);
 
         }
@@ -126,5 +126,3 @@ public class RobotContainer {
                 return autoChooser.getSelected();
         }
 }
-
-

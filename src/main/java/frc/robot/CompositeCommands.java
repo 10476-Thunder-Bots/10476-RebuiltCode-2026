@@ -12,11 +12,8 @@ public class CompositeCommands {
     public CompositeCommands() {
     }
 
-    public static Command exampleCommand() {
-        return Commands.sequence(exampleCommand(), exampleCommand(), Commands.waitTime(Seconds.of(5)));
-    }
-
     public static Command runIntake() {
-        return Commands.sequence( intake.setIntake(.2));
+        return intake.runOnce(
+                () -> intake.setIntake(-.2).andThen(Commands.waitSeconds(.1).finallyDo(() -> intake.setIntake(.2))));
     }
 }
