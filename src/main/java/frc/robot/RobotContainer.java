@@ -116,13 +116,16 @@ public class RobotContainer {
                 joystick.button(5).whileTrue(shooter
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(dashboard.getShootVelocity()))));
 
-                joystick.button(7).whileTrue(CompositeCommands.runIntake());
+                joystick.button(4)
+                                .whileTrue(shooter
+                                                .run(() -> shooter.setVelocity(
+                                                                MetersPerSecond.of(dashboard.changeShootSpeed())))
+                                                .alongWith(CompositeCommands.runIntake()));
 
-                joystick.button(4).whileTrue(shooter.run(() -> shooter.setVelocity(LinearVelocity.ofBaseUnits(dashboard.changeShootSpeed(), MetersPerSecond))).alongWith(CompositeCommands.runIntake()));
+                joystick.button(5).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
 
-                joystick.button(3).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
-
-                joystick.button(5).whileTrue(swivel.run(() -> swivel.runSetPoint(Angle.ofBaseUnits(dashboard.changeSwivelAngle(), Degree))));
+                joystick.button(3).whileTrue(swivel.run(
+                                () -> swivel.runSetPoint(Degrees.of(dashboard.changeSwivelAngle()))));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
