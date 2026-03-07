@@ -82,7 +82,7 @@ public class Swivel extends SubsystemBase {
                             .withClosedLoopController(RobotConstants.Turret.TURRET_KP, RobotConstants.Turret.TURRET_KI,
                                     RobotConstants.Turret.TURRET_KD, RobotConstants.Turret.TURRET_MAX_VEL,
                                     RobotConstants.Turret.TURRET_MAX_ACC)
-                            .withGearing(new MechanismGearing(GearBox.fromReductionStages(3,3,3,9)))
+                            .withGearing(new MechanismGearing(GearBox.fromReductionStages(3,3,7)))
                             .withIdleMode(MotorMode.BRAKE)
                             .withMotorInverted(false)
                             .withTelemetry("TurretMotor", TelemetryVerbosity.HIGH)
