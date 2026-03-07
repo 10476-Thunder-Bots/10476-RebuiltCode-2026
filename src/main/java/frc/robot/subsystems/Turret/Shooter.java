@@ -77,13 +77,14 @@ public class Shooter extends SubsystemBase {
 
     public void setVelocity(LinearVelocity speed) {
         flywheel.setMeasurementVelocitySetpoint(speed);
+        
     }
 
     public Command set(double dutyCycle) {
         return flywheel.set(dutyCycle);
     }
 
-    private LinearVelocity getVelocity() {
+    public LinearVelocity getVelocity() {
         return flywheel.getLinearVelocity();
     }
 

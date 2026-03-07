@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 
@@ -10,9 +11,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants;
+import frc.robot.subsystems.Turret.Shooter;
 
 public class Dashboard extends SubsystemBase {
     private CommandSwerveDrivetrain drivetrain;
+    Shooter shooter = Shooter.getInstance();
 
     private static Dashboard dashboard = null;
 
@@ -30,6 +33,8 @@ public class Dashboard extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Shoot Vel", getShootVelocity());
+        SmartDashboard.putNumber("Set Speed", changeShootSpeed());
+        SmartDashboard.putNumber("Set Swivel Angle", changeSwivelAngle());
     }
 
     public double getShootVelocity() {
@@ -97,4 +102,13 @@ public class Dashboard extends SubsystemBase {
         return AngularVelocity.ofBaseUnits(x, RPM);
 
     }
+
+    public double changeShootSpeed(){
+        return SmartDashboard.getNumber("Set Speed", getShootVelocity());
+    }
+
+        public double changeSwivelAngle(){
+        return SmartDashboard.getNumber("Set Swivel Angle", shootAngle().getDegrees());
+    }
+
 }

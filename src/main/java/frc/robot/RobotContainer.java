@@ -11,6 +11,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -111,12 +113,16 @@ public class RobotContainer {
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-                joystick.button(4).whileTrue(shooter
+                joystick.button(5).whileTrue(shooter
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(dashboard.getShootVelocity()))));
 
                 joystick.button(7).whileTrue(CompositeCommands.runIntake());
 
-                joystick.button(4).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
+                joystick.button(4).whileTrue(shooter.run(() -> shooter.setVelocity(LinearVelocity.ofBaseUnits(dashboard.changeShootSpeed(), MetersPerSecond))).alongWith(CompositeCommands.runIntake()));
+
+                joystick.button(3).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
+
+                joystick.button(5).whileTrue(swivel.run(() -> swivel.runSetPoint(Angle.ofBaseUnits(dashboard.changeSwivelAngle(), Degree))));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
