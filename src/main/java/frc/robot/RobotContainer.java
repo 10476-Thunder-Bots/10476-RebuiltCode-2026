@@ -111,10 +111,13 @@ public class RobotContainer {
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-                joystick.button(7).whileTrue(shooter.set(.65));
+                //joystick.button(7).whileTrue(shooter.setVelocity(RPM.of(5000*2)));
 
-                joystick.button(7).whileTrue(CompositeCommands.runIntake());
+                //joystick.button(7).whileTrue(CompositeCommands.runIntake());
 
+                joystick.button(7).whileTrue(swivel.runSetPoint(Degrees.of(90)));
+
+                //swivel.setDefaultCommand(swivel.setdutyCycle(0));
                 drivetrain.registerTelemetry(logger::telemeterize);
 
         }
@@ -123,3 +126,5 @@ public class RobotContainer {
                 return autoChooser.getSelected();
         }
 }
+
+

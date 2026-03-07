@@ -17,6 +17,6 @@ public class CompositeCommands {
     }
 
     public static Command runIntake() {
-        return Commands.sequence(intake.setIntake(-.2), Commands.waitTime(Seconds.of(.2)), intake.setIntake(.2));
+        return Commands.sequence( intake.setIntake(.2));
     }
 }

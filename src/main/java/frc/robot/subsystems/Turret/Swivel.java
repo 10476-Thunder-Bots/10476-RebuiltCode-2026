@@ -26,6 +26,7 @@ import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -81,13 +82,15 @@ public class Swivel extends SubsystemBase {
                             .withClosedLoopController(RobotConstants.Turret.TURRET_KP, RobotConstants.Turret.TURRET_KI,
                                     RobotConstants.Turret.TURRET_KD, RobotConstants.Turret.TURRET_MAX_VEL,
                                     RobotConstants.Turret.TURRET_MAX_ACC)
-                            .withGearing(new MechanismGearing(GearBox.fromReductionStages(9)))
+                            .withGearing(new MechanismGearing(GearBox.fromReductionStages(3,3,3,9)))
                             .withIdleMode(MotorMode.BRAKE)
                             .withMotorInverted(false)
                             .withTelemetry("TurretMotor", TelemetryVerbosity.HIGH)
                             .withStatorCurrentLimit(Amps.of(40))
                             .withClosedLoopRampRate(Seconds.of((.25)))
                             .withOpenLoopRampRate(Seconds.of((.25)));
+
+                motor = new TalonFXWrapper(turretMotor, DCMotor.getKrakenX60(1), motorConfig);
                     
             pConfig = new PivotConfig(motor)
                     .withStartingPosition(Degrees.of(0))
@@ -111,12 +114,18 @@ public class Swivel extends SubsystemBase {
             pivot.simIterate();
         }
 
-        public void runSetPoint() {
-            pivot.setMechanismPositionSetpoint(getTurretSetpoint());
+        public Command runSetPoint(Angle angle) {
+            return runOnce(() -> pivot.setMechanismPositionSetpoint(angle));
+        }
+
+        public Command setdutyCycle(double dutyCycle){
+            return run(() -> pivot.setDutyCycleSetpoint(dutyCycle));
         }
 
         private Boolean targeted() {
             return true;// TODO: add check to see if pivot is at the setpoint
         }
     }
+
+
 

@@ -4,10 +4,13 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.RPM;
+
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -70,7 +73,7 @@ public class Shooter extends SubsystemBase {
 
     }
 
-    public Command setVelocity(LinearVelocity speed) {
+    public Command setVelocity(AngularVelocity speed) {
         return flywheel.run(speed);
     }
 
@@ -78,9 +81,9 @@ public class Shooter extends SubsystemBase {
         return flywheel.set(dutyCycle);
     }
 
-    private LinearVelocity getVelocity() {
-        return flywheel.getLinearVelocity();
-    }
+    private AngularVelocity getVelocity() {
+        return flywheel.getSpeed();}
+    
 
     private Boolean shooterReady() {
         return true;// TODO: Add check to see if shooter meets conditions to fire
@@ -90,7 +93,7 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         flywheel.updateTelemetry();
-        SmartDashboard.putNumber("Shooter Speed", getVelocity().in(MetersPerSecond));
+        SmartDashboard.putNumber("Shooter Speed", getVelocity().in(RPM));
     }
 
     @Override
