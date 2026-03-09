@@ -88,8 +88,6 @@ public class Swivel extends SubsystemBase {
         intialOffset = new Rotation2d(Degrees.of(encoder.get()));
     }
 
-    public double getAnalogPotentiometer(){return intialOffset.getDegrees();}
-
     public Angle getSwivelSetpoint() {
         Rotation2d aimAngle = dashboard.shootAngle();
         return aimAngle.minus(intialOffset).minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
