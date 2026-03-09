@@ -1,21 +1,27 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants;
 import frc.robot.subsystems.Turret.Shooter;
+import frc.robot.subsystems.Turret.Swivel;
 
 public class Dashboard extends SubsystemBase {
     private CommandSwerveDrivetrain drivetrain;
     Shooter shooter = Shooter.getInstance();
+    Swivel swivel = Swivel.getInstance();
+    Double intialAngle = swivel.getAnalogPotentiometer();
 
     private static Dashboard dashboard = null;
 
@@ -108,7 +114,9 @@ public class Dashboard extends SubsystemBase {
     }
 
         public double changeSwivelAngle(){
-        return SmartDashboard.getNumber("Set Swivel Angle", shootAngle().getDegrees());
+        double i = SmartDashboard.getNumber("Set Swivel Angle", shootAngle().getDegrees());
+        Angle j = Rotation2d.fromDegrees(i).minus(Rotation2d.fromDegrees(intialAngle)).minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
+        return j.in(Degrees);
     }
 
 }
