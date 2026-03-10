@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -113,6 +114,7 @@ public class RobotContainer {
 
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+                
 
                 joystick.button(5).whileTrue(shooter
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));

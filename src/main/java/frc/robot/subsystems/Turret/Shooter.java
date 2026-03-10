@@ -43,8 +43,6 @@ public class Shooter extends SubsystemBase {
     }
 
     public Shooter() {
-        SmartDashboard.setDefaultNumber("Set Shooter KP", 10);
-        SmartDashboard.setDefaultNumber("Set Shooter KD", 5);
         smartMotorControllerConfig = new SmartMotorControllerConfig(this)
                 .withControlMode(ControlMode.CLOSED_LOOP)
                 // Feedback Constants (PID Constants)
@@ -72,6 +70,7 @@ public class Shooter extends SubsystemBase {
                 .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH)
                 .disableSpeedometerSimulation();
         flywheel = new FlyWheel(fConfig);
+        flywheel.getMotorController().setKv(RobotConstants.ShooterConstants.SHOOTER_KV);
 
     }
 
