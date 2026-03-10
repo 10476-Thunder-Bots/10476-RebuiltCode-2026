@@ -98,7 +98,7 @@ public class RobotContainer {
 
                 shooter.setDefaultCommand(shooter.set(0));
                 swivel.setDefaultCommand(swivel.setdutyCycle(0));
-                intake.setDefaultCommand(intake.setIntake(0));
+                intake.setDefaultCommand(intake.run(() -> intake.setIntake(0)));
                 joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
                 joystick.button(1).whileTrue(drivetrain
                                 .applyRequest(() -> point.withModuleDirection(
@@ -118,15 +118,16 @@ public class RobotContainer {
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));
 
                 joystick.button(4)
-                                .whileTrue(shooter
-                                                .run(() -> shooter.setVelocity(
-                                                                MetersPerSecond.of(dashboard.manuelShootSpeed())))
-                                                .alongWith(CompositeCommands.runIntake()));
+                                .whileTrue(shooter.run(() -> shooter.setVelocity(
+                                                MetersPerSecond.of(dashboard.manuelShootSpeed()))));
 
-                joystick.button(5).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
+                joystick.button(4).whileTrue(CompositeCommands.runIntake());
 
-                joystick.button(3).whileTrue(swivel.run(
-                                () -> swivel.runSetPoint(swivel.manuelSwivelAngle())));
+                // joystick.button(5).whileTrue(swivel.run(() ->
+                // swivel.runSetPoint(swivel.getSwivelSetpoint())));
+
+                // joystick.button(3).whileTrue(swivel.run(
+                // () -> swivel.runSetPoint(swivel.manuelSwivelAngle())));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
