@@ -93,6 +93,7 @@ public static Swivel getInstance() {
         return aimAngle.minus(intialOffset).minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
     }
 
+
     private void updateTelemetry() {
         pivot.updateTelemetry();
     }
@@ -104,6 +105,8 @@ public static Swivel getInstance() {
     public void getSwivelAngle() {
         SmartDashboard.putNumber("Swivel Angle", encoder.get());
     }
+
+    public double getAnalogPotentiometer(){return intialOffset.getDegrees();}
 
     public void runSetPoint(Angle angle) {
         pivot.setMechanismPositionSetpoint(angle);
