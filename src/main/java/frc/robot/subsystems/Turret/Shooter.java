@@ -43,10 +43,12 @@ public class Shooter extends SubsystemBase {
     }
 
     public Shooter() {
+        SmartDashboard.setDefaultNumber("Set Shooter KP", 10);
+        SmartDashboard.setDefaultNumber("Set Shooter KD", 5);
         smartMotorControllerConfig = new SmartMotorControllerConfig(this)
                 .withControlMode(ControlMode.CLOSED_LOOP)
                 // Feedback Constants (PID Constants)
-                .withClosedLoopController(RobotConstants.ShooterConstants.SHOOTER_KP, 0, 0)
+                .withClosedLoopController(SmartDashboard.getNumber("Set Shooter KP", 10), 0, SmartDashboard.getNumber("Set Shooter KD", 5))
                 // Telemetry name and verbosity level
                 .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
                 // Gearing from the motor rotor to final shaft.

@@ -35,6 +35,8 @@ public class Dashboard extends SubsystemBase {
         drivetrain = CommandSwerveDrivetrain.getInstance();
         SmartDashboard.putNumber("Encoder Offset", swivel.intialOffset.getDegrees());
         SmartDashboard.putNumber("Set Swivel Angle", swivel.manuelSwivelAngle().in(Degrees));
+        
+    
     }
 
     @Override
