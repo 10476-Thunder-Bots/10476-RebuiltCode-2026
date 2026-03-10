@@ -60,9 +60,9 @@ public class Swivel extends SubsystemBase {
         SmartDashboard.setDefaultNumber("Set Swivel KP", 20);
         SmartDashboard.setDefaultNumber("Set Swivel KD", 15);
         encoder = new AnalogPotentiometer(0, 514, -257);
-        SwivelController = new PIDController(SmartDashboard.getNumber("Set Swivel KP", 20),
+        SwivelController = new PIDController(RobotConstants.SwivelConstants.SWIVEL_KP,
                 RobotConstants.SwivelConstants.SWIVEL_KI,
-                SmartDashboard.getNumber("Set Swivel KD", 15));
+                RobotConstants.SwivelConstants.SWIVEL_KD);
         SwivelController.disableContinuousInput();
         SwivelMotor = new TalonFX(RobotConstants.SwivelConstants.SWIVEL_CAN_ID);
         motorConfig = new SmartMotorControllerConfig(this)
@@ -125,6 +125,8 @@ public class Swivel extends SubsystemBase {
     @Override
     public void periodic() {
         pivot.updateTelemetry();
+        pivot.getMotorController().setKd(SmartDashboard.getNumber("Set Swivel KD",0));
+        pivot.getMotorController().setKp(SmartDashboard.getNumber("Set Swivel KP",0));
     }
 
     @Override

@@ -48,7 +48,7 @@ public class Shooter extends SubsystemBase {
         smartMotorControllerConfig = new SmartMotorControllerConfig(this)
                 .withControlMode(ControlMode.CLOSED_LOOP)
                 // Feedback Constants (PID Constants)
-                .withClosedLoopController(SmartDashboard.getNumber("Set Shooter KP", 10), 0, SmartDashboard.getNumber("Set Shooter KD", 5))
+                .withClosedLoopController(RobotConstants.ShooterConstants.SHOOTER_KP, 0, 0)
                 // Telemetry name and verbosity level
                 .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
                 // Gearing from the motor rotor to final shaft.
@@ -99,6 +99,10 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         flywheel.updateTelemetry();
+        double SHOOTER_KP = SmartDashboard.getNumber("Set Shooter KP", 10);
+        flywheel.getMotorController().setKp(SHOOTER_KP);
+        flywheel.getMotorController().setKd(SmartDashboard.getNumber("Set Shooter KD", 5));
+
     }
 
     @Override
