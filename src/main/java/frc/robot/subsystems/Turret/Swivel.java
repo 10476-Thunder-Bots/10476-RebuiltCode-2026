@@ -88,8 +88,6 @@ public static Swivel getInstance() {
         intialOffset = new Rotation2d(Degrees.of(encoder.get()));
     }
 
-    public double getAnalogPotentiometer(){return intialOffset.getDegrees();}
-
     public Angle getSwivelSetpoint() {
         Rotation2d aimAngle = turretHelper.shootAngle();
         return aimAngle.minus(intialOffset).minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
