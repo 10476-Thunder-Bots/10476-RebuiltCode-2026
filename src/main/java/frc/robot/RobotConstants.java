@@ -47,10 +47,10 @@ public final class RobotConstants {
         public static final Translation2d LOWER_TRENCH = new Translation2d(TRENCH_X, LOWER_TRENCH_Y);
         public static final int ENCODER_ID = 0;
         public static final int SWIVEL_CAN_ID = 14;
-        public static final double SWIVEL_KP = 99;
+        public static final double SWIVEL_KP = 20;
         public static final double SWIVEL_KI = 0;
         public static final double SWIVEL_KD = .5;
-        public static final AngularVelocity SWIVEL_MAX_VEL = DegreesPerSecond.of(2);
+        public static final AngularVelocity SWIVEL_MAX_VEL = DegreesPerSecond.of(590);
         public static final AngularAcceleration SWIVEL_MAX_ACC = DegreesPerSecondPerSecond.of(46000);
         public static final double GRAVITY = -9.81;
         public static final Angle LAUNCH_ANGLE = Degrees.of(77);

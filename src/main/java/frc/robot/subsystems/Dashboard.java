@@ -34,6 +34,7 @@ public class Dashboard extends SubsystemBase {
         swivel = Swivel.getInstance();
         drivetrain = CommandSwerveDrivetrain.getInstance();
         SmartDashboard.putNumber("Encoder Offset", swivel.intialOffset.getDegrees());
+        SmartDashboard.putNumber("Set Swivel Angle", swivel.manuelSwivelAngle().in(Degrees));
     }
 
     @Override
@@ -43,8 +44,6 @@ public class Dashboard extends SubsystemBase {
         SmartDashboard.putNumber("Swivel angle", swivel.getAngle().in(Degrees));
         SmartDashboard.putNumber("Shoot Velocity", turretHelper.getShootVelocity());
         SmartDashboard.putNumber("Set Speed", manuelShootSpeed());
-        SmartDashboard.putNumber("Set Swivel Angle", swivel.manuelSwivelAngle().in(Degrees));
-        SmartDashboard.setDefaultNumber("Set Swivel Angle", 0);
     }
 
     public double manuelShootSpeed() {
