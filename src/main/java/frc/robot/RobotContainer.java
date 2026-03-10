@@ -11,8 +11,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -122,13 +120,13 @@ public class RobotContainer {
                 joystick.button(4)
                                 .whileTrue(shooter
                                                 .run(() -> shooter.setVelocity(
-                                                                MetersPerSecond.of(dashboard.changeShootSpeed())))
+                                                                MetersPerSecond.of(dashboard.manuelShootSpeed())))
                                                 .alongWith(CompositeCommands.runIntake()));
 
                 joystick.button(5).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
 
                 joystick.button(3).whileTrue(swivel.run(
-                                () -> swivel.runSetPoint(dashboard.changeSwivelAngle())));
+                                () -> swivel.runSetPoint(swivel.manuelSwivelAngle())));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 

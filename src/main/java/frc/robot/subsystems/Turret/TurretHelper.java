@@ -4,41 +4,30 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.RobotConstants;
 
-import static edu.wpi.first.units.Units.Degree;
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Turret.Shooter;
-import frc.robot.subsystems.Turret.Swivel;
 
 public class TurretHelper {
-    private CommandSwerveDrivetrain drivetrain;
     private static TurretHelper turretHelper = null;
-    
-    public static TurretHelper getInstance(){
-        if(turretHelper == null){
+
+    public static TurretHelper getInstance() {
+        if (turretHelper == null) {
             turretHelper = new TurretHelper();
         }
 
         return turretHelper;
     }
 
-private TurretHelper(){
-    drivetrain = CommandSwerveDrivetrain.getInstance();
+    private CommandSwerveDrivetrain drivetrain;
 
-}
-private Translation2d getTarget() {
+    private TurretHelper() {
+        drivetrain = CommandSwerveDrivetrain.getInstance();
+
+    }
+
+    private Translation2d getTarget() {
         if (DriverStation.getAlliance().isPresent()
                 && DriverStation.getAlliance().get().equals(DriverStation.Alliance.Blue)) {
             if (drivetrain.getState().Pose.getX() < RobotConstants.SwivelConstants.HUB_X) {
@@ -56,8 +45,9 @@ private Translation2d getTarget() {
             return RobotConstants.SwivelConstants.UPPER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
         }
         return RobotConstants.SwivelConstants.LOWER_TRENCH.minus(drivetrain.getState().Pose.getTranslation());
-}
- public double getShootVelocity() {
+    }
+
+    public double getShootVelocity() {
         // just defining some constants.
         double x = RobotConstants.SwivelConstants.HUB_X - drivetrain.getState().Pose.getX();
         double y = RobotConstants.SwivelConstants.HUB_Y - drivetrain.getState().Pose.getY();
@@ -75,7 +65,7 @@ private Translation2d getTarget() {
 
         double fullFraction = top / bottom;
         return Math.sqrt(fullFraction);
-   
+
     }
 
     public Rotation2d shootAngle() {
@@ -86,5 +76,5 @@ private Translation2d getTarget() {
         double Viy = getShootVelocity() * Math.sin(rho) - Vy;
         Rotation2d thetaI = new Rotation2d(Math.atan2(Viy, Vix));
         return thetaI.minus(new Rotation2d(90));
-}
+    }
 }

@@ -4,8 +4,6 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.RPM;
-
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.Pair;
@@ -77,15 +75,19 @@ public class Shooter extends SubsystemBase {
 
     public void setVelocity(LinearVelocity speed) {
         flywheel.setMeasurementVelocitySetpoint(speed);
-        
+
     }
 
     public Command set(double dutyCycle) {
         return flywheel.set(dutyCycle);
     }
 
-    public LinearVelocity getVelocity() {
+    public LinearVelocity getLinearVelocity() {
         return flywheel.getLinearVelocity();
+    }
+
+    public AngularVelocity getAngularVelocity() {
+        return flywheel.getSpeed();
     }
 
     private Boolean shooterReady() {
@@ -94,14 +96,11 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
         flywheel.updateTelemetry();
-        SmartDashboard.putNumber("Shooter Speed", getVelocity().in(MetersPerSecond));
     }
 
     @Override
     public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
         flywheel.simIterate();
     }
 }

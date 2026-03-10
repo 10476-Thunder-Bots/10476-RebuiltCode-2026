@@ -47,9 +47,9 @@ public class Swivel extends SubsystemBase {
     private PivotConfig pConfig;
     private Pivot pivot;
     private AnalogPotentiometer encoder;
-    private Rotation2d intialOffset;
+    public Rotation2d intialOffset;
 
-public static Swivel getInstance() {
+    public static Swivel getInstance() {
         if (swivel == null) {
             swivel = new Swivel();
         }
@@ -93,23 +93,23 @@ public static Swivel getInstance() {
         return aimAngle.minus(intialOffset).minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
     }
 
+    public Angle manuelSwivelAngle() {
+        double setAngle = SmartDashboard.getNumber("Set Swivel Angle", 0);
+        return Rotation2d.fromDegrees(setAngle).minus(intialOffset)
+                .minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
 
-    private void updateTelemetry() {
-        pivot.updateTelemetry();
     }
 
-    private void simIterate() {
-        pivot.simIterate();
+    public double getAnalogPotentiometer() {
+        return intialOffset.getDegrees();
     }
-
-    public void getSwivelAngle() {
-        SmartDashboard.putNumber("Swivel Angle", encoder.get());
-    }
-
-    public double getAnalogPotentiometer(){return intialOffset.getDegrees();}
 
     public void runSetPoint(Angle angle) {
         pivot.setMechanismPositionSetpoint(angle);
+    }
+
+    public Angle getAngle() {
+        return pivot.getAngle();
     }
 
     public Command setdutyCycle(double dutyCycle) {
@@ -122,12 +122,11 @@ public static Swivel getInstance() {
 
     @Override
     public void periodic() {
-        updateTelemetry();
-        getSwivelAngle();
+        pivot.updateTelemetry();
     }
 
     @Override
     public void simulationPeriodic() {
-        simIterate();
+        pivot.simIterate();
     }
 }
