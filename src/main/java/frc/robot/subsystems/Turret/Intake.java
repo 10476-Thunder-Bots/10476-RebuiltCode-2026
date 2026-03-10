@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
         motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public Command setIntake(double speed) {
-        return run(() -> motor.set(speed));
+    public void setIntake(double speed) {
+        motor.set(speed);
     }
 }
