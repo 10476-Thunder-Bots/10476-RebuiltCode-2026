@@ -26,6 +26,7 @@ import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.Turret.Intake;
 import frc.robot.subsystems.Turret.Shooter;
 import frc.robot.subsystems.Turret.Swivel;
+import frc.robot.subsystems.Turret.TurretHelper;
 
 public class RobotContainer {
         private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -53,6 +54,8 @@ public class RobotContainer {
         public final Dashboard dashboard = Dashboard.getInstance();
 
         public final Swivel swivel = Swivel.getInstance();
+
+        public final TurretHelper turretHelper = TurretHelper.getInstance();
 
         public final Shooter shooter = Shooter.getInstance();
         private final SendableChooser<Command> autoChooser;
@@ -114,7 +117,7 @@ public class RobotContainer {
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
                 joystick.button(5).whileTrue(shooter
-                                .run(() -> shooter.setVelocity(MetersPerSecond.of(dashboard.getShootVelocity()))));
+                                .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));
 
                 joystick.button(4)
                                 .whileTrue(shooter
@@ -125,7 +128,7 @@ public class RobotContainer {
                 joystick.button(5).whileTrue(swivel.run(() -> swivel.runSetPoint(swivel.getSwivelSetpoint())));
 
                 joystick.button(3).whileTrue(swivel.run(
-                                () -> swivel.runSetPoint(Degrees.of(dashboard.changeSwivelAngle()))));
+                                () -> swivel.runSetPoint(dashboard.changeSwivelAngle())));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 

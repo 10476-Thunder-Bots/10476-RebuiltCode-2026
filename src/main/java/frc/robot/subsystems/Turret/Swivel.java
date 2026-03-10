@@ -38,14 +38,7 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 public class Swivel extends SubsystemBase {
     private static Swivel swivel = null;
 
-    public static Swivel getInstance() {
-        if (swivel == null) {
-            swivel = new Swivel();
-        }
-        return swivel;
-    }
-
-    private Dashboard dashboard = Dashboard.getInstance();
+    private TurretHelper turretHelper = TurretHelper.getInstance();
     private CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
     private PIDController SwivelController;
     private TalonFX SwivelMotor;
@@ -55,6 +48,13 @@ public class Swivel extends SubsystemBase {
     private Pivot pivot;
     private AnalogPotentiometer encoder;
     private Rotation2d intialOffset;
+
+public static Swivel getInstance() {
+        if (swivel == null) {
+            swivel = new Swivel();
+        }
+        return swivel;
+    }
 
     private Swivel() {
         encoder = new AnalogPotentiometer(0, 514, -257);
@@ -69,7 +69,7 @@ public class Swivel extends SubsystemBase {
                         RobotConstants.SwivelConstants.SWIVEL_KI,
                         RobotConstants.SwivelConstants.SWIVEL_KD, RobotConstants.SwivelConstants.SWIVEL_MAX_VEL,
                         RobotConstants.SwivelConstants.SWIVEL_MAX_ACC)
-                .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 3, 7)))
+                .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 3, 6.75)))
                 .withIdleMode(MotorMode.BRAKE)
                 .withMotorInverted(false)
                 .withTelemetry("SwivelMotor", TelemetryVerbosity.HIGH)
@@ -91,7 +91,7 @@ public class Swivel extends SubsystemBase {
     public double getAnalogPotentiometer(){return intialOffset.getDegrees();}
 
     public Angle getSwivelSetpoint() {
-        Rotation2d aimAngle = dashboard.shootAngle();
+        Rotation2d aimAngle = turretHelper.shootAngle();
         return aimAngle.minus(intialOffset).minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
     }
 
