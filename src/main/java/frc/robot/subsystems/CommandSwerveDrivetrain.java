@@ -342,10 +342,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 visionMeasurementStdDevs);
     }
 
-    public void resetGyro() {
-        camera.resync();
-    }
-
     public void dashbaordValues() {
         /*
          * Just some values I chose mainly to test if it sends to SmartDashboard,
@@ -428,11 +424,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
                         rightEstimator.getPoseEstimate().get().timestampSeconds);
             }
-        }
-
-        public void resync() {
-            leftLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
-            rightLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
         }
     }
 }
