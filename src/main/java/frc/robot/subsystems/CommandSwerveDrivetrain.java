@@ -37,6 +37,7 @@ import limelight.Limelight;
 import limelight.networktables.AngularVelocity3d;
 import limelight.networktables.LimelightPoseEstimator;
 import limelight.networktables.LimelightPoseEstimator.EstimationMode;
+import limelight.networktables.LimelightSettings.ImuMode;
 import limelight.networktables.Orientation3d;
 
 /**
@@ -402,6 +403,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         Vision() {
             leftLimeLight = new Limelight(RobotConstants.LimeLight.LEFT_LIMELIGHT_NAME);
             rightLimeLight = new Limelight(RobotConstants.LimeLight.RIGHT_LIMELIGHT_NAME);
+            leftLimeLight.getSettings().withImuMode(ImuMode.ExternalImu);
+            rightLimeLight.getSettings().withImuMode(ImuMode.ExternalImu);
             setVisionMeasurementStdDevs(RobotConstants.LimeLight.STD_DEVS);
             leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
             rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
@@ -414,6 +417,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                     DegreesPerSecond.of(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()));
             orientation = new Orientation3d(getPigeon2().getRotation3d(), angularVelocity);
             leftLimeLight.getSettings().withRobotOrientation(orientation).save();
+
             rightLimeLight.getSettings().withRobotOrientation(orientation).save();
 
             if (!(leftEstimator.getPoseEstimate().isEmpty())
