@@ -124,6 +124,8 @@ public class RobotContainer {
 
                 joystick.button(4).whileTrue(CompositeCommands.runIntake());
 
+                joystick.button(7).onTrue(AutoCommands.createPath());
+
                 // joystick.button(5).whileTrue(swivel.run(() ->
                 // swivel.runSetPoint(swivel.getSwivelSetpoint())));
 
