@@ -114,8 +114,8 @@ public class RobotContainer {
 
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-                
 
+                joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.resetGyro()));
                 joystick.button(5).whileTrue(shooter
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));
 

@@ -342,10 +342,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 visionMeasurementStdDevs);
     }
 
-    public Command resetGyro() {
-        return Commands.run(() -> {
-            this.getPigeon2().reset();
-        });
+    public void resetGyro() {
+        this.getPigeon2().reset();
     }
 
     public void dashbaordValues() {
@@ -403,8 +401,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         Vision() {
             leftLimeLight = new Limelight(RobotConstants.LimeLight.LEFT_LIMELIGHT_NAME);
             rightLimeLight = new Limelight(RobotConstants.LimeLight.RIGHT_LIMELIGHT_NAME);
-            leftLimeLight.getSettings().withImuMode(ImuMode.ExternalImu);
-            rightLimeLight.getSettings().withImuMode(ImuMode.ExternalImu);
+            leftLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
+            rightLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
             setVisionMeasurementStdDevs(RobotConstants.LimeLight.STD_DEVS);
             leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
             rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
