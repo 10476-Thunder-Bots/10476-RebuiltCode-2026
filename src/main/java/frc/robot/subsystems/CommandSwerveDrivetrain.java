@@ -343,7 +343,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void resetGyro() {
-        this.getPigeon2().reset();
+        camera.resync();
     }
 
     public void dashbaordValues() {
@@ -428,6 +428,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
                         rightEstimator.getPoseEstimate().get().timestampSeconds);
             }
+        }
+
+        public void resync() {
+            leftLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
+            rightLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
         }
     }
 }
