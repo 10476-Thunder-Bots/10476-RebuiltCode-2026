@@ -114,7 +114,6 @@ public class RobotContainer {
 
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-                
 
                 joystick.button(5).whileTrue(shooter
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));
@@ -124,6 +123,8 @@ public class RobotContainer {
                                                 MetersPerSecond.of(dashboard.manuelShootSpeed()))));
 
                 joystick.button(4).whileTrue(CompositeCommands.runIntake());
+
+                joystick.button(7).onTrue(AutoCommands.createPath());
 
                 // joystick.button(5).whileTrue(swivel.run(() ->
                 // swivel.runSetPoint(swivel.getSwivelSetpoint())));
