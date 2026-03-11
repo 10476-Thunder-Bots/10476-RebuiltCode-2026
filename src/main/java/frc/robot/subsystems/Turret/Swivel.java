@@ -57,7 +57,6 @@ public class Swivel extends SubsystemBase {
     }
 
     private Swivel() {
-        encoder = new AnalogPotentiometer(0, 514, -257);
         SwivelController = new PIDController(RobotConstants.SwivelConstants.SWIVEL_KP,
                 RobotConstants.SwivelConstants.SWIVEL_KI,
                 RobotConstants.SwivelConstants.SWIVEL_KD);
@@ -85,7 +84,6 @@ public class Swivel extends SubsystemBase {
                 .withHardLimit(Degrees.of(-180), Degrees.of(180))
                 .withMOI(Inches.of(4), Pounds.of(2.72));
         pivot = new Pivot(pConfig);
-        intialOffset = new Rotation2d(Degrees.of(encoder.get()));
     }
 
     public Angle getSwivelSetpoint() {
@@ -98,10 +96,6 @@ public class Swivel extends SubsystemBase {
         return Rotation2d.fromDegrees(setAngle).minus(intialOffset)
                 .minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
 
-    }
-
-    public double getAnalogPotentiometer() {
-        return intialOffset.getDegrees();
     }
 
     public void runSetPoint(Angle angle) {
