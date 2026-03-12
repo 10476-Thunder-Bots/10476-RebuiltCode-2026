@@ -46,8 +46,7 @@ public class Swivel extends SubsystemBase {
     private SmartMotorController motor;
     private PivotConfig pConfig;
     private Pivot pivot;
-    private AnalogPotentiometer encoder;
-    public Rotation2d intialOffset;
+    
 
     public static Swivel getInstance() {
         if (swivel == null) {
@@ -87,14 +86,12 @@ public class Swivel extends SubsystemBase {
     }
 
     public Angle getSwivelSetpoint() {
-        Rotation2d aimAngle = turretHelper.shootAngle();
-        return aimAngle.minus(intialOffset).minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
-    }
+        Angle aimAngle = turretHelper.shootAngle().getMeasure();
+       return aimAngle;}
 
     public Angle manuelSwivelAngle() {
         double setAngle = SmartDashboard.getNumber("Set Swivel Angle", 0);
-        return Rotation2d.fromDegrees(setAngle).minus(intialOffset)
-                .minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
+        return Angle.ofBaseUnits(setAngle, Degrees);
 
     }
 

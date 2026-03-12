@@ -10,7 +10,7 @@ public class CompositeCommands {
     }
 
     public static Command runIntake() {
-        return Commands.sequence(Loader.getInstance().runOnce(() ->Loader.getInstance().setIntake(-.1)),
+        return Commands.sequence(Loader.getInstance().runOnce(() ->Loader.getInstance().setLoader(-.1)),
                 Commands.waitSeconds(.1),
                 Loader.getInstance().run(() -> Loader.getInstance().setLoader(.2)));
     }

@@ -1,5 +1,55 @@
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+package frc.robot.subsystems;
 
-public class Intake extends SubsystemBase {
-    
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkFlexConfig;
+
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotConstants;
+
+public class Intake extends SubsystemBase{
+    private SparkFlex motor;
+    private SparkFlexConfig motorConfig;
+    private SparkFlex motorFollower;
+    private SparkFlexConfig motorFollowerConfig;
+    private TalonFX motorKraken;
+    private TalonFXConfiguration motorKrakenConfig;
+    private Slot0Configs slot0Configs;
+
+    private Intake(){
+        motor = new SparkFlex(19, MotorType.kBrushless);
+        motorConfig = new SparkFlexConfig();
+        motorConfig.inverted(false);
+        motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorFollower = new SparkFlex(20, MotorType.kBrushless);
+        motorFollowerConfig = new SparkFlexConfig();
+        motorFollowerConfig.follow(motor, true);
+        motorFollower.configure(motorFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorKraken = new TalonFX(21);
+        motorKrakenConfig = new TalonFXConfiguration().withSlot0(slot0Configs);
+        motorKrakenConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
+        slot0Configs = new Slot0Configs()
+                .withKP(RobotConstants.IntakeConstants.Intake_KP)
+                .withKD(RobotConstants.IntakeConstants.Intake_KD)
+                .withKI(RobotConstants.IntakeConstants.Intake_KI);
+        motorKraken.getConfigurator().apply(motorKrakenConfig);
+
+    }   
+
+    public void setVacuum(){
+        motor.set(30);
+    }
+
+    public void setIntakeMover(){
+        motorKraken.set(5);
+    }
 }
+
