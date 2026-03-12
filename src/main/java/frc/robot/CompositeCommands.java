@@ -9,8 +9,8 @@ public class CompositeCommands {
     public CompositeCommands() {
     }
 
-    public static Command runIntake() {
-        return Commands.sequence(Loader.getInstance().runOnce(() ->Loader.getInstance().setLoader(-.1)),
+    public static Command runLoader() {
+        return Commands.sequence(Loader.getInstance().runOnce(() -> Loader.getInstance().setLoader(-.1)),
                 Commands.waitSeconds(.1),
                 Loader.getInstance().run(() -> Loader.getInstance().setLoader(.2)));
     }

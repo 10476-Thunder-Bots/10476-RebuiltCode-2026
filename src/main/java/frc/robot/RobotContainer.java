@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Dashboard;
-import frc.robot.subsystems.Turret.Intake;
+import frc.robot.subsystems.Turret.Loader;
 import frc.robot.subsystems.Turret.Shooter;
 import frc.robot.subsystems.Turret.Swivel;
 import frc.robot.subsystems.Turret.TurretHelper;
@@ -48,7 +48,7 @@ public class RobotContainer {
 
         public final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
-        private final Intake intake = Intake.getInstance();
+        private final Loader loader = Loader.getInstance();
 
         public final Dashboard dashboard = Dashboard.getInstance();
 
@@ -99,7 +99,7 @@ public class RobotContainer {
 
                 shooter.setDefaultCommand(shooter.set(0));
                 swivel.setDefaultCommand(swivel.setdutyCycle(0));
-                intake.setDefaultCommand(intake.run(() -> intake.setIntake(0)));
+                loader.setDefaultCommand(loader.run(() -> loader.setLoader(0)));
                 joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
                 joystick.button(1).whileTrue(drivetrain
                                 .applyRequest(() -> point.withModuleDirection(
@@ -122,9 +122,9 @@ public class RobotContainer {
                                 .whileTrue(shooter.run(() -> shooter.setVelocity(
                                                 MetersPerSecond.of(dashboard.manuelShootSpeed()))));
 
-                joystick.button(4).whileTrue(CompositeCommands.runIntake());
+                joystick.button(4).whileTrue(CompositeCommands.runLoader());
 
-                joystick.button(7).onTrue(AutoCommands.createPath());
+                joystick.button(3).onTrue(AutoCommands.createPath());
 
                 // joystick.button(5).whileTrue(swivel.run(() ->
                 // swivel.runSetPoint(swivel.getSwivelSetpoint())));
