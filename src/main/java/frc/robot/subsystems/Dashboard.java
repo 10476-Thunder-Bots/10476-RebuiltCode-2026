@@ -18,6 +18,7 @@ public class Dashboard extends SubsystemBase {
     private Shooter shooter;
     private Swivel swivel;
     private TurretHelper turretHelper;
+    private Intake intake;
 
     private static Dashboard dashboard = null;
 
@@ -29,18 +30,19 @@ public class Dashboard extends SubsystemBase {
     }
 
     private Dashboard() {
+        intake = Intake.getInstance();
         turretHelper = TurretHelper.getInstance();
         shooter = Shooter.getInstance();
         swivel = Swivel.getInstance();
         drivetrain = CommandSwerveDrivetrain.getInstance();
 
         SmartDashboard.putNumber("Set Swivel Angle", swivel.manuelSwivelAngle().in(Degrees));
-        
-    
+
     }
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Positition of Intake", intake.getIntakePosition().in(Degrees));
         SmartDashboard.putNumber("MPS of shooter", shooter.getLinearVelocity().in(MetersPerSecond));
         SmartDashboard.putNumber("RPM of shooter", shooter.getAngularVelocity().in(RPM));
         SmartDashboard.putNumber("Swivel angle", swivel.getAngle().in(Degrees));

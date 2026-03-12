@@ -2,8 +2,6 @@ package frc.robot;
 
 import java.io.IOException;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-
 import org.json.simple.parser.ParseException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -22,7 +20,7 @@ public class AutoCommands {
         // Load the path we want to pathfind to and follow
         PathPlannerPath path;
         try {
-            path = PathPlannerPath.fromPathFile("Right");
+            path = PathPlannerPath.fromPathFile("Left");
         } catch (FileVersionException | IOException | ParseException e) {
             e.printStackTrace();
             return null;
