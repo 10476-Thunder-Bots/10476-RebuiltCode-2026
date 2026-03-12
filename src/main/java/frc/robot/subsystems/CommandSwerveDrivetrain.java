@@ -39,6 +39,7 @@ import limelight.networktables.LimelightPoseEstimator;
 import limelight.networktables.LimelightPoseEstimator.EstimationMode;
 import limelight.networktables.LimelightSettings.ImuMode;
 import limelight.networktables.Orientation3d;
+import limelight.networktables.PoseEstimate;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -400,8 +401,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             leftLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
             rightLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
             setVisionMeasurementStdDevs(RobotConstants.LimeLight.STD_DEVS);
-            leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
-            rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
+            leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG1);
+            rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG1);
         }
 
         public void update() {
@@ -413,17 +414,34 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             leftLimeLight.getSettings().withRobotOrientation(orientation).save();
 
             rightLimeLight.getSettings().withRobotOrientation(orientation).save();
+            checkVision(leftEstimator);
+            checkVision(rightEstimator);
+        }
 
-            if (!(leftEstimator.getPoseEstimate().isEmpty())
-                    && !(leftEstimator.getPoseEstimate().get().tagCount == 0)) {
-                addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        leftEstimator.getPoseEstimate().get().timestampSeconds);
+        private boolean checkVision(LimelightPoseEstimator poseEstimator) {
+
+            if (poseEstimator.getPoseEstimate().isEmpty()) {
+                return false;
             }
-            if (!(rightEstimator.getPoseEstimate().isEmpty())
-                    && !(rightEstimator.getPoseEstimate().get().tagCount == 0)) {
-                addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        rightEstimator.getPoseEstimate().get().timestampSeconds);
+
+            // only get poses that have 2 or more visable tags
+            PoseEstimate poseEstimate = poseEstimator.getPoseEstimate().get();
+
+            if (poseEstimate.tagCount == 0) {
+                return false;
             }
+            if (poseEstimate.tagCount <= 1) {
+                if (poseEstimate.getAvgTagAmbiguity() > .7 || poseEstimate.avgTagDist > 3) {
+                    return false;
+                }
+            }
+
+            // checks for a trash pose and throws it out
+            if (Math.abs(poseEstimate.pose.getX()) < 1e-6 && Math.abs(poseEstimate.pose.getY()) < 1e-6) {
+                return false;
+            }
+            addVisionMeasurement(poseEstimate.pose.toPose2d(), poseEstimate.timestampSeconds);
+            return true;
         }
     }
 }
