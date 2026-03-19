@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
@@ -49,7 +50,8 @@ public class Intake extends SubsystemBase {
                 .withKD(RobotConstants.IntakeConstants.Intake_KD)
                 .withKI(RobotConstants.IntakeConstants.Intake_KI);
         motorKrakenConfig = new TalonFXConfiguration().withSlot0(slot0Configs);
-        motorKrakenConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
+        motorKrakenConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive)
+                .withNeutralMode(NeutralModeValue.Brake);
         motorKraken.getConfigurator().apply(motorKrakenConfig);
 
     }

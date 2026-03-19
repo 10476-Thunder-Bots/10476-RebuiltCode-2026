@@ -5,8 +5,8 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Loader extends SubsystemBase {
@@ -28,9 +28,9 @@ public class Loader extends SubsystemBase {
         motor = new SparkFlex(17, MotorType.kBrushless);
         motorFollower = new SparkFlex(18, MotorType.kBrushless);
         motorConfig = new SparkFlexConfig();
-        motorConfig.inverted(false);
+        motorConfig.inverted(false).idleMode(IdleMode.kCoast);
         followerConfig = new SparkFlexConfig();
-        followerConfig.follow(17, true);
+        followerConfig.follow(17, true).idleMode(IdleMode.kCoast);
         motorFollower.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
