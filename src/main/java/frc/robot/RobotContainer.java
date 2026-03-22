@@ -100,7 +100,7 @@ public class RobotContainer {
                 shooter.setDefaultCommand(shooter.set(0));
                 swivel.setDefaultCommand(swivel.setdutyCycle(0));
                 loader.setDefaultCommand(loader.run(() -> loader.setLoader(0)));
-                joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
+                joystick.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
                 joystick.button(1).whileTrue(drivetrain
                                 .applyRequest(() -> point.withModuleDirection(
                                                 new Rotation2d(-joystick.getY(), -joystick.getX()))));
@@ -126,6 +126,8 @@ public class RobotContainer {
                 joystick.button(4).whileTrue(CompositeCommands.runLoader());
 
                 joystick.button(3).toggleOnTrue(CompositeCommands.intakeOn()).onFalse(CompositeCommands.intakeOff());
+
+                joystick.button(2).whileTrue(CompositeCommands.shakeBot());
 
                 // joystick.button(5).whileTrue(swivel.run(() ->
                 // swivel.runSetPoint(swivel.getSwivelSetpoint())));
