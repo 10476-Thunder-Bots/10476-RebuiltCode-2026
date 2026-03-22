@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
@@ -44,6 +45,8 @@ public class RobotContainer {
         private final Telemetry logger = new Telemetry(MaxSpeed);
 
         private final CommandJoystick joystick = new CommandJoystick(0);
+
+        private final CommandXboxController xboxjoystick = new CommandXboxController(1);
 
         public final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
@@ -131,8 +134,11 @@ public class RobotContainer {
                 joystick.button(2).whileTrue(CompositeCommands.shakeBot());
                 joystick.button(3).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
                 joystick.button(2).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
+                xboxjoystick.button(3).whileTrue(() -> )
 
                 drivetrain.registerTelemetry(logger::telemeterize);
+                
+
 
         }
 
