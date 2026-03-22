@@ -129,7 +129,7 @@ public class RobotContainer {
 
                 joystick.button(4).whileTrue(CompositeCommands.runLoader());
 
-                joystick.button(2).whileTrue(CompositeCommands.shakeBot());
+                joystick.button(4).whileTrue(CompositeCommands.shakeBot());
                 joystick.button(3).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
                 joystick.button(2).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
                 xboxjoystick.button(3).whileTrue(loader.run
