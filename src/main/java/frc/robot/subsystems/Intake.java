@@ -51,7 +51,7 @@ public class Intake extends SubsystemBase {
                 .withKI(RobotConstants.IntakeConstants.Intake_KI);
         motorKrakenConfig = new TalonFXConfiguration().withSlot0(slot0Configs);
         motorKrakenConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive)
-                .withNeutralMode(NeutralModeValue.Brake);
+                .withNeutralMode(NeutralModeValue.Coast);
         motorKraken.getConfigurator().apply(motorKrakenConfig);
 
     }

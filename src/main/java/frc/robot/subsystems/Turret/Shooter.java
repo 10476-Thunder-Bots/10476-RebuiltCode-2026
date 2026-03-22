@@ -2,7 +2,6 @@ package frc.robot.subsystems.Turret;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 

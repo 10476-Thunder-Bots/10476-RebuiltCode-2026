@@ -8,7 +8,6 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -57,6 +56,9 @@ public class RobotContainer {
         public final TurretHelper turretHelper = TurretHelper.getInstance();
 
         public final Shooter shooter = Shooter.getInstance();
+
+        private final AutoCommands autoCommands = new AutoCommands();
+
         private final SendableChooser<Command> autoChooser;
 
         public RobotContainer() {
@@ -114,7 +116,6 @@ public class RobotContainer {
 
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-                
 
                 joystick.button(5).whileTrue(shooter
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));
@@ -128,12 +129,8 @@ public class RobotContainer {
                 joystick.button(3).toggleOnTrue(CompositeCommands.intakeOn()).onFalse(CompositeCommands.intakeOff());
 
                 joystick.button(2).whileTrue(CompositeCommands.shakeBot());
-
-                // joystick.button(5).whileTrue(swivel.run(() ->
-                // swivel.runSetPoint(swivel.getSwivelSetpoint())));
-
-                // joystick.button(3).whileTrue(swivel.run(
-                // () -> swivel.runSetPoint(swivel.manuelSwivelAngle())));
+                joystick.button(3).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
+                joystick.button(2).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
