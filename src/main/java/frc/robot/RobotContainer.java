@@ -129,13 +129,13 @@ public class RobotContainer {
 
                 joystick.button(4).whileTrue(CompositeCommands.runLoader());
 
-                joystick.button(3).toggleOnTrue(CompositeCommands.intakeOn()).onFalse(CompositeCommands.intakeOff());
-
                 joystick.button(2).whileTrue(CompositeCommands.shakeBot());
                 joystick.button(3).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
                 joystick.button(2).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
-                xboxjoystick.button(3).whileTrue(() -> )
-
+                xboxjoystick.button(3).whileTrue(loader.runOnce(() -> loader.setLoader(30)));
+                xboxjoystick.button(4).whileTrue(CompositeCommands.swivelShoot());
+                xboxjoystick.button(2).toggleOnTrue(CompositeCommands.intakeOn())
+                .onFalse(CompositeCommands.intakeOff());
                 drivetrain.registerTelemetry(logger::telemeterize);
                 
 
