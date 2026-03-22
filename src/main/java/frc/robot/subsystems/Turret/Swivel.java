@@ -76,11 +76,6 @@ public class Swivel extends SubsystemBase {
         pivot = new Pivot(pConfig);
     }
 
-    public Angle getSwivelSetpoint() {
-        return turretHelper.shootAngle().minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
-
-    }
-
     public Angle manuelSwivelAngle() {
         double setAngle = SmartDashboard.getNumber("Set Swivel Angle", 0);
         return Angle.ofBaseUnits(setAngle, Degrees);

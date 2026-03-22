@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Pounds;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -54,6 +55,7 @@ public class Shooter extends SubsystemBase {
                 .withMotorInverted(false)
                 .withIdleMode(MotorMode.COAST)
                 .withStatorCurrentLimit(Amps.of(40))
+                .withFeedforward(new SimpleMotorFeedforward(0, RobotConstants.ShooterConstants.SHOOTER_KV))
                 .withFollowers(Pair.of(
                         new SparkFlex(RobotConstants.ShooterConstants.FOLLOWER_CAN_ID, MotorType.kBrushless), true));
 
@@ -69,7 +71,6 @@ public class Shooter extends SubsystemBase {
                 .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH)
                 .disableSpeedometerSimulation();
         flywheel = new FlyWheel(fConfig);
-        flywheel.getMotorController().setKv(RobotConstants.ShooterConstants.SHOOTER_KV);
 
     }
 
