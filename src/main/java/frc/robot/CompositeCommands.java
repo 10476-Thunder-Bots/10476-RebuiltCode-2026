@@ -50,8 +50,8 @@ public class CompositeCommands {
         drivetrain.applyRequest(() -> robotDrive.withRotationalRate(Math.toRadians(270))).withTimeout(0.32));
     }
     public static Command swivelShoot(){
-        return swivel.runOnce(() -> swivel.runSetPoint(turretHelper.shootAngle().getMeasure()))
-        .alongWith(shooter.runOnce(() -> shooter.setVelocity(LinearVelocity.ofBaseUnits(turretHelper.getShootVelocity(), MetersPerSecond))));
+        return swivel.run(() -> swivel.runSetPoint(turretHelper.shootAngle().getMeasure()))
+        .alongWith(shooter.run(() -> shooter.setVelocity(LinearVelocity.ofBaseUnits(turretHelper.getShootVelocity(), MetersPerSecond))));
     }
 
 }
