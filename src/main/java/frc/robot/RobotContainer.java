@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Dashboard;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret.Loader;
 import frc.robot.subsystems.Turret.Shooter;
 import frc.robot.subsystems.Turret.Swivel;
@@ -57,9 +57,6 @@ public class RobotContainer {
         public final TurretHelper turretHelper = TurretHelper.getInstance();
 
         public final Shooter shooter = Shooter.getInstance();
-
-        private final Intake intake = Intake.getInstance();
-
         private final SendableChooser<Command> autoChooser;
 
         public RobotContainer() {
@@ -103,7 +100,6 @@ public class RobotContainer {
                 shooter.setDefaultCommand(shooter.set(0));
                 swivel.setDefaultCommand(swivel.setdutyCycle(0));
                 loader.setDefaultCommand(loader.run(() -> loader.setLoader(0)));
-                intake.setDefaultCommand(intake.run(() -> intake.setVacuum(0)));
                 joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
                 joystick.button(1).whileTrue(drivetrain
                                 .applyRequest(() -> point.withModuleDirection(
@@ -118,6 +114,7 @@ public class RobotContainer {
 
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+                
 
                 joystick.button(5).whileTrue(shooter
                                 .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));
@@ -128,7 +125,7 @@ public class RobotContainer {
 
                 joystick.button(4).whileTrue(CompositeCommands.runLoader());
 
-                joystick.button(3).toggleOnTrue(AutoCommands.createPath());
+                joystick.button(3).toggleOnTrue(CompositeCommands.intakeOn()).onFalse(CompositeCommands.intakeOff());
 
                 // joystick.button(5).whileTrue(swivel.run(() ->
                 // swivel.runSetPoint(swivel.getSwivelSetpoint())));
