@@ -75,6 +75,6 @@ public class TurretHelper {
         double Vix = getShootVelocity() * Math.cos(rho) - Vx;
         double Viy = getShootVelocity() * Math.sin(rho) - Vy;
         Rotation2d thetaI = new Rotation2d(Math.atan2(Viy, Vix));
-        return thetaI.minus(new Rotation2d(90));
+        return thetaI.minus(drivetrain.getPigeon2().getRotation2d());
     }
 }

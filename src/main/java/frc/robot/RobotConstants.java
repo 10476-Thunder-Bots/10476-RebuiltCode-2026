@@ -62,4 +62,10 @@ public final class RobotConstants {
         public static final double SHOOTER_KP = 0;
         public static final double SHOOTER_KV = 0.10695;
     }
+
+    public static class IntakeConstants {
+        public static final double Intake_KP = 0;
+         public static final double Intake_KD = 0;
+          public static final double Intake_KI = 0;
+    }
 }

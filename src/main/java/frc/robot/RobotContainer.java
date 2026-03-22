@@ -8,7 +8,6 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,13 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Dashboard;
-import frc.robot.subsystems.Turret.Intake;
+import frc.robot.subsystems.Turret.Loader;
 import frc.robot.subsystems.Turret.Shooter;
 import frc.robot.subsystems.Turret.Swivel;
 import frc.robot.subsystems.Turret.TurretHelper;
@@ -46,9 +46,11 @@ public class RobotContainer {
 
         private final CommandJoystick joystick = new CommandJoystick(0);
 
+        private final CommandXboxController xboxjoystick = new CommandXboxController(1);
+
         public final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
-        private final Intake intake = Intake.getInstance();
+        private final Loader loader = Loader.getInstance();
 
         public final Dashboard dashboard = Dashboard.getInstance();
 
@@ -57,6 +59,9 @@ public class RobotContainer {
         public final TurretHelper turretHelper = TurretHelper.getInstance();
 
         public final Shooter shooter = Shooter.getInstance();
+
+        private final AutoCommands autoCommands = new AutoCommands();
+
         private final SendableChooser<Command> autoChooser;
 
         public RobotContainer() {
@@ -99,8 +104,8 @@ public class RobotContainer {
 
                 shooter.setDefaultCommand(shooter.set(0));
                 swivel.setDefaultCommand(swivel.setdutyCycle(0));
-                intake.setDefaultCommand(intake.run(() -> intake.setIntake(0)));
-                joystick.button(2).whileTrue(drivetrain.applyRequest(() -> brake));
+                loader.setDefaultCommand(loader.run(() -> loader.setLoader(0)));
+                joystick.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
                 joystick.button(1).whileTrue(drivetrain
                                 .applyRequest(() -> point.withModuleDirection(
                                                 new Rotation2d(-joystick.getY(), -joystick.getX()))));
@@ -122,17 +127,19 @@ public class RobotContainer {
                                 .whileTrue(shooter.run(() -> shooter.setVelocity(
                                                 MetersPerSecond.of(dashboard.manuelShootSpeed()))));
 
-                joystick.button(4).whileTrue(CompositeCommands.runIntake());
+                joystick.button(4).whileTrue(CompositeCommands.runLoader());
 
-                joystick.button(7).onTrue(AutoCommands.createPath());
-
-                // joystick.button(5).whileTrue(swivel.run(() ->
-                // swivel.runSetPoint(swivel.getSwivelSetpoint())));
-
-                // joystick.button(3).whileTrue(swivel.run(
-                // () -> swivel.runSetPoint(swivel.manuelSwivelAngle())));
-
+                joystick.button(4).whileTrue(CompositeCommands.shakeBot());
+                joystick.button(3).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
+                joystick.button(2).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
+                xboxjoystick.button(3).whileTrue(loader.run
+                (() -> loader.setLoader(.3)));
+                xboxjoystick.button(4).whileTrue(CompositeCommands.swivelShoot());
+                xboxjoystick.button(2).toggleOnTrue(CompositeCommands.intakeOn())
+                .onFalse(CompositeCommands.intakeOff());
                 drivetrain.registerTelemetry(logger::telemeterize);
+                
+
 
         }
 
