@@ -9,6 +9,18 @@
           "data": {
             "pathName": "Left"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "middle center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "upper center shoot"
+          }
         }
       ]
     }
