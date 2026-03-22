@@ -77,8 +77,8 @@ public class Swivel extends SubsystemBase {
     }
 
     public Angle getSwivelSetpoint() {
-        Angle aimAngle = turretHelper.shootAngle().getMeasure();
-        return aimAngle;
+        return turretHelper.shootAngle().minus(drivetrain.getRotation3d().toRotation2d()).getMeasure();
+
     }
 
     public Angle manuelSwivelAngle() {
