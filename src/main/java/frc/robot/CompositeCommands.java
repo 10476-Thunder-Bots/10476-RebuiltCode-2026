@@ -40,6 +40,6 @@ public class CompositeCommands {
 
     public static Command shakeBot(){
         return Commands.repeatingSequence(drivetrain.applyRequest(() -> robotDrive.withRotationalRate(Math.toRadians(-270))).withTimeout(0.3),
-        drivetrain.applyRequest(() -> robotDrive.withRotationalRate(Math.toRadians(270))).withTimeout(0.34));
+        drivetrain.applyRequest(() -> robotDrive.withRotationalRate(Math.toRadians(270))).withTimeout(0.32));
 }
 }
