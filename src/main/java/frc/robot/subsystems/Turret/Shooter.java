@@ -55,7 +55,6 @@ public class Shooter extends SubsystemBase {
                 .withMotorInverted(false)
                 .withIdleMode(MotorMode.COAST)
                 .withStatorCurrentLimit(Amps.of(40))
-                .withFeedforward(new SimpleMotorFeedforward(0, RobotConstants.ShooterConstants.SHOOTER_KV))
                 .withFollowers(Pair.of(
                         new SparkFlex(RobotConstants.ShooterConstants.FOLLOWER_CAN_ID, MotorType.kBrushless), true));
 
@@ -71,6 +70,7 @@ public class Shooter extends SubsystemBase {
                 .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH)
                 .disableSpeedometerSimulation();
         flywheel = new FlyWheel(fConfig);
+        flywheel.getMotorController().setKv(RobotConstants.ShooterConstants.SHOOTER_KV);
 
     }
 
@@ -98,9 +98,6 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         flywheel.updateTelemetry();
-        double SHOOTER_KP = SmartDashboard.getNumber("Set Shooter KP", 10);
-        flywheel.getMotorController().setKp(SHOOTER_KP);
-        flywheel.getMotorController().setKd(SmartDashboard.getNumber("Set Shooter KD", 5));
 
     }
 
