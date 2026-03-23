@@ -51,8 +51,8 @@ public class TurretHelper {
 
     public double getShootVelocity() {
         // just defining some constants.
-        double x = RobotConstants.SwivelConstants.HUB_X - drivetrain.getState().Pose.getX();
-        double y = RobotConstants.SwivelConstants.HUB_Y - drivetrain.getState().Pose.getY();
+        double x = getTarget().getX();
+        double y = getTarget().getY();
         double w = 1.3;
         double x2 = Math.pow(x, 2);
         double y2 = Math.pow(y, 2);
@@ -80,14 +80,14 @@ public class TurretHelper {
         return thetaI.minus(drivetrain.getState().Pose.getRotation());
     }
 
-    public LinearVelocity launchSpeed(){
-        double x1 =10;
-        double x2=25;
+    public LinearVelocity launchSpeed() {
+        double x1 = 10;
+        double x2 = 25;
         double y1 = 6.762762998;
-        double y2=31.92232649;
+        double y2 = 31.92232649;
         double y = getShootVelocity();
 
-        double mps = (((y - y1)*(x2-x1))/(y2-y1))+x1;
+        double mps = (((y - y1) * (x2 - x1)) / (y2 - y1)) + x1;
         return LinearVelocity.ofBaseUnits(mps, MetersPerSecond);
 
     }
