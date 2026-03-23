@@ -108,7 +108,7 @@ public class RobotContainer {
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
                 joystick.button(5).whileTrue(shooter
-                                .run(() -> shooter.setVelocity(MetersPerSecond.of(turretHelper.getShootVelocity()))));
+                                .run(() -> shooter.setVelocity(turretHelper.launchSpeed())));
 
                 joystick.button(4)
                                 .whileTrue(shooter.run(() -> shooter.setVelocity(

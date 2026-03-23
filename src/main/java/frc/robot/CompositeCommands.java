@@ -55,7 +55,7 @@ public class CompositeCommands {
     public static Command swivelShoot() {
         return swivel.run(() -> swivel.runSetPoint(turretHelper.shootAngle().getMeasure()))
                 .alongWith(shooter.run(() -> shooter
-                        .setVelocity(LinearVelocity.ofBaseUnits(turretHelper.getShootVelocity(), MetersPerSecond))));
+                        .setVelocity(turretHelper.launchSpeed())));
     }
 
 }
