@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Dashboard;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret.Loader;
 import frc.robot.subsystems.Turret.Shooter;
 import frc.robot.subsystems.Turret.Swivel;
@@ -56,6 +57,8 @@ public class RobotContainer {
         public final TurretHelper turretHelper = TurretHelper.getInstance();
 
         public final Shooter shooter = Shooter.getInstance();
+
+        public final Intake intake = Intake.getInstance();
 
         private final AutoCommands autoCommands = new AutoCommands();
 
@@ -119,8 +122,9 @@ public class RobotContainer {
                 joystick.button(2).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
                 xboxjoystick.button(3).whileTrue(CompositeCommands.runLoader());
                 xboxjoystick.button(4).toggleOnTrue(CompositeCommands.swivelShoot());
-                xboxjoystick.button(2).toggleOnTrue(CompositeCommands.intakeOn())
-                                .onFalse(CompositeCommands.intakeOff());
+                //xboxjoystick.button(2).toggleOnTrue(CompositeCommands.intakeOn())
+                               // .onFalse(CompositeCommands.intakeOff());
+                xboxjoystick.button(2).whileTrue(intake.run(()-> intake.pushIntakeOut()));
                 drivetrain.registerTelemetry(logger::telemeterize);
 
         }
