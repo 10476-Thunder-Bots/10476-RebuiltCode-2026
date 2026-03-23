@@ -82,26 +82,17 @@ public class TurretHelper {
         double rho = Math.atan2(getTarget().getY(), getTarget().getX());
         double Vix = getShootVelocity() * Math.cos(rho) - Vx;
         double Viy = getShootVelocity() * Math.sin(rho) - Vy;
-        Rotation2d thetaI = new Rotation2d(Math.atan2(Viy, Vix));
-        return thetaI.minus(drivetrain.getState().Pose.getRotation());
+        Rotation2d thetaI = new Rotation2d(-Math.atan2(Viy, Vix));
+        return thetaI.plus(drivetrain.getState().Pose.getRotation());
     }
 
     public AngularVelocity launchSpeed() {
         Distance distanceFromTarget = Meters
                 .of(Math.sqrt(Math.pow(getTarget().getX(), 2) + Math.pow(getTarget().getY(), 2)));
-        if (distanceFromTarget.in(Inches) < 49) {
-            return RPM.of(2500);
-        }
-        if (distanceFromTarget.in(Inches) < 72) {
-            return RPM.of(3200);
-        }
-        if (distanceFromTarget.in(Inches) < 93) {
-            return RPM.of(3750);
-        }
-        if (distanceFromTarget.in(Inches) < 137) {
-            return RPM.of(4250);
-        }
-        return RPM.of(6000);
+        double[] distances = { 24, 36, 52, 56, 75, 78, 89, 107 };
+        double[] speeds = { 2500, 2700, 3200, 3300, 3750, 3900, 4100, 4250 };
+        double hubRobotOffset = 35
+        for i = 0; i< distances.length;i++
     }
 
 }

@@ -115,7 +115,6 @@ public class RobotContainer {
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-
                 joystick.button(5)
                                 .whileTrue(shooter.run(() -> shooter.setVelocity(
                                                 RPM.of(dashboard.manuelShootSpeed()))));
@@ -127,7 +126,7 @@ public class RobotContainer {
                 xboxjoystick.button(4).toggleOnTrue(CompositeCommands.swivelShoot());
                 // xboxjoystick.button(2).toggleOnTrue(CompositeCommands.intakeOn())
                 // .onFalse(CompositeCommands.intakeOff());
-                xboxjoystick.button(2).whileTrue(intake.run(() -> intake.pushIntakeOut()));
+                xboxjoystick.button(2).whileTrue(CompositeCommands.intakeOn());
                 drivetrain.registerTelemetry(logger::telemeterize);
 
         }
