@@ -7,6 +7,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.RobotConstants;
 
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RPM;
@@ -88,11 +89,19 @@ public class TurretHelper {
     public AngularVelocity launchSpeed() {
         Distance distanceFromTarget = Meters
                 .of(Math.sqrt(Math.pow(getTarget().getX(), 2) + Math.pow(getTarget().getY(), 2)));
-        if (distanceFromTarget.in(Meters) < 2) {
-            return RPM.of(2400);
+        if (distanceFromTarget.in(Inches) < 94) {
+            return RPM.of(2500);
         }
-        return RPM.of(9999999);
-
+        if (distanceFromTarget.in(Inches) < 122) {
+            return RPM.of(3200);
+        }
+        if (distanceFromTarget.in(Inches) < 145) {
+            return RPM.of(3750);
+        }
+        if (distanceFromTarget.in(Inches) < 177) {
+            return RPM.of(4250);
+        }
+        return RPM.of(6000);
     }
 
 }
