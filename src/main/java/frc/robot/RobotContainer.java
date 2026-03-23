@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -66,7 +67,11 @@ public class RobotContainer {
 
         public RobotContainer() {
                 configureBindings();
-
+                NamedCommands.registerCommand("pathfind", drivetrain.runOnce(() -> autoCommands.choosePath()));
+                NamedCommands.registerCommand("shoot", CompositeCommands.swivelShoot());
+                NamedCommands.registerCommand("run loader", CompositeCommands.runLoader());
+                NamedCommands.registerCommand("run intake", CompositeCommands.intakeOn());
+                NamedCommands.registerCommand("retract intake", CompositeCommands.intakeOff());
                 autoChooser = AutoBuilder.buildAutoChooser();
 
                 SmartDashboard.putData("autoChooser", autoChooser);
