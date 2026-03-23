@@ -89,16 +89,16 @@ public class TurretHelper {
     public AngularVelocity launchSpeed() {
         Distance distanceFromTarget = Meters
                 .of(Math.sqrt(Math.pow(getTarget().getX(), 2) + Math.pow(getTarget().getY(), 2)));
-        if (distanceFromTarget.in(Inches) < 94) {
+        if (distanceFromTarget.in(Inches) < 49) {
             return RPM.of(2500);
         }
-        if (distanceFromTarget.in(Inches) < 122) {
+        if (distanceFromTarget.in(Inches) < 72) {
             return RPM.of(3200);
         }
-        if (distanceFromTarget.in(Inches) < 145) {
+        if (distanceFromTarget.in(Inches) < 93) {
             return RPM.of(3750);
         }
-        if (distanceFromTarget.in(Inches) < 177) {
+        if (distanceFromTarget.in(Inches) < 137) {
             return RPM.of(4250);
         }
         return RPM.of(6000);
