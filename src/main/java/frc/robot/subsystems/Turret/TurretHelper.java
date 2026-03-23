@@ -76,8 +76,8 @@ public class TurretHelper {
         double rho = Math.atan2(getTarget().getY(), getTarget().getX());
         double Vix = getShootVelocity() * Math.cos(rho) - Vx;
         double Viy = getShootVelocity() * Math.sin(rho) - Vy;
-        Rotation2d thetaI = new Rotation2d(Math.atan2(Viy, Vix));
-        return thetaI.minus(drivetrain.getState().Pose.getRotation());
+        Rotation2d thetaI = new Rotation2d(-Math.atan2(Viy, Vix));
+        return thetaI.plus(drivetrain.getState().Pose.getRotation());
     }
 
     public LinearVelocity launchSpeed() {
