@@ -13,6 +13,7 @@ import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class TurretHelper {
@@ -80,15 +81,18 @@ public class TurretHelper {
         double rho = Math.atan2(getTarget().getY(), getTarget().getX());
         double Vix = getShootVelocity() * Math.cos(rho) - Vx;
         double Viy = getShootVelocity() * Math.sin(rho) - Vy;
-        Rotation2d thetaI = new Rotation2d(-Math.atan2(Viy, Vix));
-        return thetaI.plus(drivetrain.getState().Pose.getRotation());
+        Rotation2d thetaI = new Rotation2d(Math.atan2(Viy, Vix));
+        return thetaI.minus(drivetrain.getState().Pose.getRotation());
     }
 
     public AngularVelocity launchSpeed() {
-        Distance distanceFromTarget = Meters.of(Math.sqrt(Math.pow(getTarget().getX(),2)+Math.pow(getTarget().getY(),2)));
-        double intialRPM = 2300;
-        double rateOfGain = 700; 
-        return RPM.of(distanceFromTarget.in(Meters)*rateOfGain+intialRPM);
+        Distance distanceFromTarget = Meters
+                .of(Math.sqrt(Math.pow(getTarget().getX(), 2) + Math.pow(getTarget().getY(), 2)));
+        if (distanceFromTarget.in(Meters) < 2) {
+            return RPM.of(2400);
+        }
+        return RPM.of(9999999);
 
     }
+
 }
