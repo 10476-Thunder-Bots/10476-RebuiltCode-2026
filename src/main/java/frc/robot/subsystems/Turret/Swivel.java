@@ -30,8 +30,6 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 public class Swivel extends SubsystemBase {
     private static Swivel swivel = null;
 
-    private TurretHelper turretHelper = TurretHelper.getInstance();
-    private CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
     private PIDController SwivelController;
     private TalonFX SwivelMotor;
     private SmartMotorControllerConfig motorConfig;
@@ -59,7 +57,7 @@ public class Swivel extends SubsystemBase {
                         RobotConstants.SwivelConstants.SWIVEL_KD, RobotConstants.SwivelConstants.SWIVEL_MAX_VEL,
                         RobotConstants.SwivelConstants.SWIVEL_MAX_ACC)
                 .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 3, 6.75)))
-                .withIdleMode(MotorMode.BRAKE)
+                .withIdleMode(MotorMode.COAST)
                 .withMotorInverted(false)
                 .withTelemetry("SwivelMotor", TelemetryVerbosity.HIGH)
                 .withStatorCurrentLimit(Amps.of(40))

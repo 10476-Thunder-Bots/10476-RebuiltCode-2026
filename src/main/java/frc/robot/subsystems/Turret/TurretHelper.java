@@ -2,8 +2,10 @@ package frc.robot.subsystems.Turret;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.RobotConstants;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -49,8 +51,8 @@ public class TurretHelper {
 
     public double getShootVelocity() {
         // just defining some constants.
-        double x = RobotConstants.SwivelConstants.HUB_X - drivetrain.getState().Pose.getX();
-        double y = RobotConstants.SwivelConstants.HUB_Y - drivetrain.getState().Pose.getY();
+        double x = getTarget().getX();
+        double y = getTarget().getY();
         double w = 1.3;
         double x2 = Math.pow(x, 2);
         double y2 = Math.pow(y, 2);
@@ -75,6 +77,18 @@ public class TurretHelper {
         double Vix = getShootVelocity() * Math.cos(rho) - Vx;
         double Viy = getShootVelocity() * Math.sin(rho) - Vy;
         Rotation2d thetaI = new Rotation2d(Math.atan2(Viy, Vix));
-        return thetaI.minus(drivetrain.getPigeon2().getRotation2d());
+        return thetaI.minus(drivetrain.getState().Pose.getRotation());
+    }
+
+    public LinearVelocity launchSpeed() {
+        double x1 = 10;
+        double x2 = 25;
+        double y1 = 6.762762998;
+        double y2 = 31.92232649;
+        double y = getShootVelocity();
+
+        double mps = (((y - y1) * (x2 - x1)) / (y2 - y1)) + x1;
+        return LinearVelocity.ofBaseUnits(mps, MetersPerSecond);
+
     }
 }

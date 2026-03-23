@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Degrees;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -34,6 +35,7 @@ public class Intake extends SubsystemBase {
     private TalonFX motorKraken;
     private TalonFXConfiguration motorKrakenConfig;
     private Slot0Configs slot0Configs;
+    private PositionVoltage request;
 
     private Intake() {
         motor = new SparkFlex(19, MotorType.kBrushless);
@@ -65,7 +67,12 @@ public class Intake extends SubsystemBase {
     }
 
     public void pushIntakeOut() {
-        motorKraken.setPosition(Degrees.of(0));
+        request = new PositionVoltage(0).withSlot(0);
+        motorKraken.setControl(request.withPosition(150).withVelocity(10).withSlot(0));
+        System.out.println("Sent");
+        System.out.println(motorKraken.getMotorVoltage().getValueAsDouble());
+        System.out.println(motorKraken.getPosition().getValue().in(Degrees));
+
     }
 
     public void pullIntakeIn() {

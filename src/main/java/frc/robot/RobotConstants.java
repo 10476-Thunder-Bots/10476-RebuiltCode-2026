@@ -64,7 +64,7 @@ public final class RobotConstants {
     }
 
     public static class IntakeConstants {
-        public static final double Intake_KP = 0;
+        public static final double Intake_KP = 1;
          public static final double Intake_KD = 0;
           public static final double Intake_KI = 0;
     }

@@ -43,12 +43,13 @@ public class Dashboard extends SubsystemBase {
         SmartDashboard.putNumber("MPS of shooter", shooter.getLinearVelocity().in(MetersPerSecond));
         SmartDashboard.putNumber("RPM of shooter", shooter.getAngularVelocity().in(RPM));
         SmartDashboard.putNumber("Swivel angle", swivel.getAngle().in(Degrees));
-        SmartDashboard.putNumber("Shoot Velocity", turretHelper.getShootVelocity());
+        SmartDashboard.putNumber("Desired Velocity", turretHelper.getShootVelocity());
         SmartDashboard.putNumber("Set Speed", manuelShootSpeed());
+        SmartDashboard.putNumber("Launch Velocity", turretHelper.launchSpeed().in(MetersPerSecond));
     }
 
     public double manuelShootSpeed() {
-        return SmartDashboard.getNumber("Set Speed", turretHelper.getShootVelocity());
+        return SmartDashboard.getNumber("Set Speed", turretHelper.launchSpeed().in(MetersPerSecond));
     }
 
 }

@@ -23,35 +23,39 @@ public class CompositeCommands {
     static Swivel swivel = Swivel.getInstance();
     static SwerveRequest.RobotCentric robotDrive = new SwerveRequest.RobotCentric();
     static TurretHelper turretHelper = TurretHelper.getInstance();
-        
-    
+
     static CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
+
     public CompositeCommands() {
 
     }
-
 
     public static Command runLoader() {
         return Commands.sequence(Loader.getInstance().runOnce(() -> Loader.getInstance().setLoader(-.1)),
                 Commands.waitSeconds(.1),
                 Loader.getInstance().run(() -> Loader.getInstance().setLoader(.2)));
     }
-    
-    public static Command intakeOn(){
-        return Commands.sequence(intake.runOnce(() -> intake.pushIntakeOut()), intake.runOnce(() -> intake.setVacuum(.3)));
+
+    public static Command intakeOn() {
+        return Commands.sequence(intake.runOnce(() -> intake.pushIntakeOut()),
+                intake.runOnce(() -> intake.setVacuum(.3)));
     }
 
-    public static Command intakeOff(){
-        return Commands.sequence(intake.runOnce(() -> intake.setVacuum(0)), intake.runOnce(() -> intake.pullIntakeIn()));
+    public static Command intakeOff() {
+        return Commands.sequence(intake.runOnce(() -> intake.setVacuum(0)),
+                intake.runOnce(() -> intake.pullIntakeIn()));
     }
 
-    public static Command shakeBot(){
-        return Commands.repeatingSequence(drivetrain.applyRequest(() -> robotDrive.withRotationalRate(Math.toRadians(-270))).withTimeout(0.3),
-        drivetrain.applyRequest(() -> robotDrive.withRotationalRate(Math.toRadians(270))).withTimeout(0.32));
+    public static Command shakeBot() {
+        return Commands.repeatingSequence(
+                drivetrain.applyRequest(() -> robotDrive.withVelocityX(MetersPerSecond.of(-5))).withTimeout(0.1),
+                drivetrain.applyRequest(() -> robotDrive.withVelocityX(MetersPerSecond.of(5))).withTimeout(0.12));
     }
-    public static Command swivelShoot(){
+
+    public static Command swivelShoot() {
         return swivel.run(() -> swivel.runSetPoint(turretHelper.shootAngle().getMeasure()))
-        .alongWith(shooter.run(() -> shooter.setVelocity(LinearVelocity.ofBaseUnits(turretHelper.getShootVelocity(), MetersPerSecond))));
+                .alongWith(shooter.run(() -> shooter
+                        .setVelocity(turretHelper.launchSpeed())));
     }
 
 }
