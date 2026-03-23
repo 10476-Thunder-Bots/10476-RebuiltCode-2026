@@ -11,39 +11,81 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "right back center"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "bottom center shoot"
+            "waitTime": 0
           }
         },
         {
           "type": "named",
           "data": {
             "name": "shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "run loader"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "right back trench"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pathfind"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lower trench center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "run intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retract intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "bottom center shoot pt 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lower center shoot pt 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "run loader"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

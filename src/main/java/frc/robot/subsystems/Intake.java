@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
 
     public void pushIntakeOut() {
         request = new PositionVoltage(0).withSlot(0);
-        motorKraken.setControl(request.withPosition(150).withVelocity(10).withSlot(0));
+        motorKraken.setControl(request.withPosition(-150).withVelocity(10).withSlot(0));
         System.out.println("Sent");
         System.out.println(motorKraken.getMotorVoltage().getValueAsDouble());
         System.out.println(motorKraken.getPosition().getValue().in(Degrees));

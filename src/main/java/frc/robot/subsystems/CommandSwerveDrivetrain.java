@@ -435,10 +435,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 }
             }
 
-            // checks for a trash pose and throws it out
-            if (Math.abs(poseEstimate.pose.getX()) < 1e-6 && Math.abs(poseEstimate.pose.getY()) < 1e-6) {
-                return false;
-            }
+           
             addVisionMeasurement(poseEstimate.pose.toPose2d(), poseEstimate.timestampSeconds);
             return true;
         }

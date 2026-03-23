@@ -2,10 +2,14 @@ package frc.robot.subsystems.Turret;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.RobotConstants;
 
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -80,15 +84,11 @@ public class TurretHelper {
         return thetaI.plus(drivetrain.getState().Pose.getRotation());
     }
 
-    public LinearVelocity launchSpeed() {
-        double x1 = 10;
-        double x2 = 25;
-        double y1 = 6.762762998;
-        double y2 = 31.92232649;
-        double y = getShootVelocity();
-
-        double mps = (((y - y1) * (x2 - x1)) / (y2 - y1)) + x1;
-        return LinearVelocity.ofBaseUnits(mps, MetersPerSecond);
+    public AngularVelocity launchSpeed() {
+        Distance distanceFromTarget = Meters.of(Math.sqrt(Math.pow(getTarget().getX(),2)+Math.pow(getTarget().getY(),2)));
+        double intialRPM = 2300;
+        double rateOfGain = 700; 
+        return RPM.of(distanceFromTarget.in(Meters)*rateOfGain+intialRPM);
 
     }
 }

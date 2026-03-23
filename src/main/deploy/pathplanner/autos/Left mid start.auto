@@ -17,21 +17,51 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "run loader"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "middle center"
+            "pathName": "middle trench"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intake"
+            "name": "pathfind"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "upper center shoot"
+            "pathName": "upper trench center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "run intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retract intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "upper center shoot pt 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "upper center shoot pt 2"
           }
         },
         {
@@ -39,11 +69,17 @@
           "data": {
             "name": "shoot"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "run loader"
+          }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

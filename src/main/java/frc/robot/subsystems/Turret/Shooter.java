@@ -74,8 +74,8 @@ public class Shooter extends SubsystemBase {
 
     }
 
-    public void setVelocity(LinearVelocity speed) {
-        flywheel.setMeasurementVelocitySetpoint(speed);
+    public void setVelocity(AngularVelocity speed) {
+        flywheel.setMechanismVelocitySetpoint(speed);
 
     }
 
