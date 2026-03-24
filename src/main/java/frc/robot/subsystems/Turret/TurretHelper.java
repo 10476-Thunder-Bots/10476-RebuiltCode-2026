@@ -88,15 +88,18 @@ public class TurretHelper {
 
     public AngularVelocity launchSpeed() {
         Distance distanceFromTarget = getDistanceFromTarget();
-        double[] distances = { 24, 36, 52, 56, 75, 78, 89, 107, 125 };
-        double[] speeds = { 2500, 2700, 3200, 3300, 3750, 3900, 4100, 4250, 5000 };
-        double hubRobotOffset = 35;
+        double[] distances = { 24, 36, 52, 56, 75, 78, 89, 107 };
+        double[] speeds = { 2500, 2700, 3200, 3300, 3750, 3900, 4100, 4250 };
         for (int i = 0; i < distances.length - 1; i++) {
-            if (distanceFromTarget.in(Inches) < distances[i] + (distances[i + 1] - distances[i]) / 2 + hubRobotOffset) {
-                return RPM.of(speeds[i]);
+            double slope = (speeds[i + 1] - speeds[i]) / (distances[i + 1] - distances[i]);
+            if (distanceFromTarget.in(Inches) < distances[i + 1]) {
+                return RPM.of(slope * (distanceFromTarget.in(Inches) - distances[i]) + speeds[i]);
             }
         }
-        return RPM.of(6000);
+        double slope = (speeds[speeds.length - 1] - speeds[speeds.length - 2])
+                / (distances[distances.length - 1] - distances[distances.length - 2]);
+        return RPM.of(
+                slope * (distanceFromTarget.in(Inches) - distances[distances.length - 1]) + speeds[speeds.length - 1]);
     }
 
     public Distance getDistanceFromTarget() {
