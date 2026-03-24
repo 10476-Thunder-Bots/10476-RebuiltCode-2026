@@ -37,7 +37,7 @@ public class CompositeCommands {
     }
 
     public static Command intakeOn() {
-        return Commands.sequence(
+        return Commands.sequence(intake.runOnce(() -> intake.pushIntakeOut()),
                 intake.runOnce(() -> intake.setVacuum(-.3)));
     }
 
