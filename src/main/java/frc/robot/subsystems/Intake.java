@@ -55,6 +55,7 @@ public class Intake extends SubsystemBase {
         motorKrakenConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive)
                 .withNeutralMode(NeutralModeValue.Coast);
         motorKraken.getConfigurator().apply(motorKrakenConfig);
+        motorKraken.setPosition(0);
         request = new PositionVoltage(0).withSlot(0);
     }
 
@@ -67,11 +68,11 @@ public class Intake extends SubsystemBase {
     }
 
     public void pushIntakeOut() {
-        motorKraken.setControl(request.withPosition(-150).withVelocity(10).withSlot(0));
+        motorKraken.setControl(request.withPosition(-100).withVelocity(10).withSlot(0));
     }
 
     public void pullIntakeIn() {
-        motorKraken.setControl(request.withPosition(-150).withVelocity(10).withSlot(0));
+        motorKraken.setControl(request.withPosition(0).withVelocity(10).withSlot(0));
     }
 
     public Angle getIntakePosition() {

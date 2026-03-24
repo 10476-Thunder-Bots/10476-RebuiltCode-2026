@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Rotations;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -40,7 +41,7 @@ public class Dashboard extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Positition of Intake", intake.getIntakePosition().in(Degrees));
+        SmartDashboard.putNumber("Positition of Intake", intake.getIntakePosition().in(Rotations));
         SmartDashboard.putNumber("MPS of shooter", shooter.getLinearVelocity().in(MetersPerSecond));
         SmartDashboard.putNumber("RPM of shooter", shooter.getAngularVelocity().in(RPM));
         SmartDashboard.putNumber("Swivel angle", swivel.getAngle().in(Degrees));
