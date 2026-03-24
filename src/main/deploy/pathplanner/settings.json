@@ -3,6 +3,8 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "trench 2 pathfindless%",
+    "trench pathfindless%",
     "VERY IMPORTANT",
     "past trench 1",
     "past trench 2",
