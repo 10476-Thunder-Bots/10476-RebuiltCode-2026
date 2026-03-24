@@ -26,8 +26,8 @@ public final class RobotConstants {
     public static class LimeLight {
         public static final String LEFT_LIMELIGHT_NAME = "limelight-uncleft";
         public static final String RIGHT_LIMELIGHT_NAME = "limelight-unleft";
-        private static final double XY_STD_DEV = 0.2;
-        private static final double THETA_STD_DEV = 9999999;
+        private static final double XY_STD_DEV = 0.7;
+        private static final double THETA_STD_DEV = .7;
         public static final Matrix<N3, N1> STD_DEVS = VecBuilder.fill(XY_STD_DEV, XY_STD_DEV, THETA_STD_DEV);
     }
 
