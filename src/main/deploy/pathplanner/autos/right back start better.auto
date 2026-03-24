@@ -38,32 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "right back trench"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "pathfind"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 4.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lower trench center"
+            "pathName": "right back to center"
           }
         },
         {
@@ -81,32 +56,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "bottom center shoot pt 1"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "pathfind"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 4.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lower center shoot pt 2"
+            "pathName": "lower pathfindless"
           }
         },
         {
@@ -138,6 +88,6 @@
     }
   },
   "resetOdom": false,
-  "folder": "average pathfind enjoyer",
+  "folder": "average hopes and dreams chad",
   "choreoAuto": false
 }

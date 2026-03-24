@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left back"
+            "pathName": "Middle"
           }
         },
         {
@@ -38,32 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left back trench"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "pathfind"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 4.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "upper trench center"
+            "pathName": "middle to center"
           }
         },
         {
@@ -75,32 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "upper center shoot pt 1"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "pathfind"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 4.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "upper center shoot pt 2"
+            "pathName": "upper pathfindless"
           }
         },
         {
@@ -126,6 +76,6 @@
     }
   },
   "resetOdom": false,
-  "folder": "average pathfind enjoyer",
+  "folder": "average hopes and dreams chad",
   "choreoAuto": false
 }

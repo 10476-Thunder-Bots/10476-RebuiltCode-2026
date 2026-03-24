@@ -126,6 +126,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "average pathfind enjoyer",
   "choreoAuto": false
 }
