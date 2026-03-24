@@ -42,15 +42,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "run intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "retract intake"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "run intake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              }
+            ]
           }
         },
         {
