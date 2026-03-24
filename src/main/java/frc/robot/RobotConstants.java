@@ -27,8 +27,8 @@ public final class RobotConstants {
         public static final String LEFT_LIMELIGHT_NAME = "limelight-uncleft";
         public static final String RIGHT_LIMELIGHT_NAME = "limelight-unleft";
         private static final double XY_STD_DEV = 0.2;
-        private static final double THEATA_STD_DEV = 1.5;
-        public static final Matrix<N3, N1> STD_DEVS = VecBuilder.fill(XY_STD_DEV, XY_STD_DEV, THEATA_STD_DEV);
+        private static final double THETA_STD_DEV = 9999999;
+        public static final Matrix<N3, N1> STD_DEVS = VecBuilder.fill(XY_STD_DEV, XY_STD_DEV, THETA_STD_DEV);
     }
 
     public static class SwivelConstants {
@@ -65,7 +65,7 @@ public final class RobotConstants {
 
     public static class IntakeConstants {
         public static final double Intake_KP = 1;
-         public static final double Intake_KD = 0;
-          public static final double Intake_KI = 0;
+        public static final double Intake_KD = 0;
+        public static final double Intake_KI = 0;
     }
 }
