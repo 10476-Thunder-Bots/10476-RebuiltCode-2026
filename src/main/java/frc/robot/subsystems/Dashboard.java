@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RPM;
 
@@ -46,6 +47,7 @@ public class Dashboard extends SubsystemBase {
         SmartDashboard.putNumber("Desired Velocity", turretHelper.getShootVelocity());
         SmartDashboard.putNumber("Set Speed", manuelShootSpeed());
         SmartDashboard.putNumber("Launch Velocity", turretHelper.launchSpeed().in(RPM));
+        SmartDashboard.putNumber("Distance from target (in)", turretHelper.getDistanceFromTarget().in(Inches));
     }
 
     public double manuelShootSpeed() {
