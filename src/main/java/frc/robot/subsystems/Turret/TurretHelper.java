@@ -91,8 +91,8 @@ public class TurretHelper {
         double[] distances = { 24, 36, 52, 56, 75, 78, 89, 107 };
         double[] speeds = { 2500, 2700, 3200, 3300, 3750, 3900, 4100, 4250 };
         for (int i = 0; i < distances.length - 1; i++) {
-            double slope = (speeds[i + 1] - speeds[i]) / (distances[i + 1] - distances[i]);
             if (distanceFromTarget.in(Inches) < distances[i + 1]) {
+                double slope = (speeds[i + 1] - speeds[i]) / (distances[i + 1] - distances[i]);
                 return RPM.of(slope * (distanceFromTarget.in(Inches) - distances[i]) + speeds[i]);
             }
         }
