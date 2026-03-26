@@ -64,4 +64,10 @@ public class CompositeCommands {
                 drivetrain.applyRequest(() -> robotDrive.withVelocityY(MetersPerSecond.of(5))).withTimeout(0.12));
 
 }
+    public static Command ballUnstucker(){
+        return Commands.repeatingSequence(
+                intake.runOnce(()-> intake.pushIntakeOut()), Commands.waitSeconds(.5),
+                intake.runOnce(()-> intake.pullIntakeIn()), Commands.waitSeconds(.5)
+        );
+    }
 }
