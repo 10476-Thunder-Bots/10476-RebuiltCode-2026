@@ -3,16 +3,18 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "trench 2 pathfindless%",
-    "trench pathfindless%",
+    "in case of emergency break glass",
     "VERY IMPORTANT",
     "past trench 1",
     "past trench 2",
     "start",
+    "trench 2 pathfindless%",
+    "trench pathfindless%",
     "under trench 1",
     "under trench 2"
   ],
   "autoFolders": [
+    "broken hopes and dreams",
     "average hopes and dreams chad",
     "average pathfind enjoyer"
   ],
