@@ -86,6 +86,13 @@ public class TurretHelper {
         return thetaI.plus(drivetrain.getState().Pose.getRotation());
     }
 
+    /*public Rotation2d shootAngle(){
+        double x = getTarget().getX();
+        double y = getTarget().getY();
+        Rotation2d theta = new Rotation2d(-Math.atan2(y, x));
+        return theta.plus(drivetrain.getState().Pose.getRotation());
+    }*/
+
     public AngularVelocity launchSpeed() {
         Distance distanceFromTarget = getDistanceFromTarget();
         double[] distances = { 24, 36, 52, 56, 75, 78, 89, 107 };

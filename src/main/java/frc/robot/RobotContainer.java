@@ -14,6 +14,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
@@ -115,18 +116,20 @@ public class RobotContainer {
                 // reset the field-centric heading on button 6 press
                 joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-                joystick.button(5)
+                xboxjoystick.button(5)
                                 .whileTrue(shooter.run(() -> shooter.setVelocity(
                                                 RPM.of(dashboard.manuelShootSpeed()))));
 
-                joystick.button(4).whileTrue(CompositeCommands.shakeBot());
-                joystick.button(3).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
-                joystick.button(2).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
+                joystick.button(4).whileTrue(CompositeCommands.shakeBotX());
+                joystick.button(3).whileTrue(CompositeCommands.shakeBotY());
+                joystick.button(13).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
+                joystick.button(11).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
                 xboxjoystick.button(3).whileTrue(CompositeCommands.runLoader());
                 xboxjoystick.button(4).toggleOnTrue(CompositeCommands.swivelShoot());
                 xboxjoystick.povUp().whileTrue(CompositeCommands.intakeOn());
                 xboxjoystick.povDown().whileTrue(CompositeCommands.intakeOff());
                 drivetrain.registerTelemetry(logger::telemeterize);
+
 
         }
 

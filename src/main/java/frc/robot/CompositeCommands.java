@@ -38,7 +38,7 @@ public class CompositeCommands {
 
     public static Command intakeOn() {
         return Commands.sequence(intake.runOnce(() -> intake.pushIntakeOut()),
-                intake.runOnce(() -> intake.setVacuum(-.3)));
+                intake.runOnce(() -> intake.setVacuum(-.5)));
     }
 
     public static Command intakeOff() {
@@ -46,7 +46,7 @@ public class CompositeCommands {
                 intake.runOnce(() -> intake.pullIntakeIn()));
     }
 
-    public static Command shakeBot() {
+    public static Command shakeBotX() {
         return Commands.repeatingSequence(
                 drivetrain.applyRequest(() -> robotDrive.withVelocityX(MetersPerSecond.of(-5))).withTimeout(0.1),
                 drivetrain.applyRequest(() -> robotDrive.withVelocityX(MetersPerSecond.of(5))).withTimeout(0.12));
@@ -58,4 +58,10 @@ public class CompositeCommands {
                         .setVelocity(turretHelper.launchSpeed())));
     }
 
+      public static Command shakeBotY() {
+        return Commands.repeatingSequence(
+                drivetrain.applyRequest(() -> robotDrive.withVelocityY(MetersPerSecond.of(-5))).withTimeout(0.1),
+                drivetrain.applyRequest(() -> robotDrive.withVelocityY(MetersPerSecond.of(5))).withTimeout(0.12));
+
+}
 }
