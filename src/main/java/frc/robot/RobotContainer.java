@@ -126,6 +126,7 @@ public class RobotContainer {
                 joystick.button(11).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
                 xboxjoystick.button(3).whileTrue(CompositeCommands.runLoader());
                 xboxjoystick.button(4).toggleOnTrue(CompositeCommands.swivelShoot());
+                xboxjoystick.button(1).whileTrue(CompositeCommands.SpinBeybalde());
                 xboxjoystick.povUp().whileTrue(CompositeCommands.intakeOn());
                 xboxjoystick.povDown().whileTrue(CompositeCommands.intakeOff());
                 drivetrain.registerTelemetry(logger::telemeterize);
