@@ -54,8 +54,8 @@ public class CompositeCommands {
         return Commands.repeatingSequence(drivetrain.applyRequest(()-> robotDrive.withVelocityY(0)).withTimeout(.01), 
         drivetrain.applyRequest(()-> robotDrive.withVelocityX(0)).withTimeout(0.01),
         drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(0, RotationsPerSecond))).withTimeout(.01),
-        drivetrain.applyRequest(()-> robotDrive.withVelocityX(LinearVelocity.ofBaseUnits(-5, MetersPerSecond))).withTimeout(0.1),
-        drivetrain.applyRequest(()-> robotDrive.withVelocityX(LinearVelocity.ofBaseUnits(5, MetersPerSecond))).withTimeout(0.1));
+        drivetrain.applyRequest(()-> robotDrive.withVelocityX(LinearVelocity.ofBaseUnits(-2, MetersPerSecond))).withTimeout(0.108),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityX(LinearVelocity.ofBaseUnits(2, MetersPerSecond))).withTimeout(0.1));
     }
 
     public static Command swivelShoot() {
@@ -69,22 +69,25 @@ public class CompositeCommands {
         drivetrain.applyRequest(()-> robotDrive.withVelocityX(0)).withTimeout(0.01),
         drivetrain.applyRequest(()-> robotDrive.withVelocityY(0)).withTimeout(0.01),
         drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(0, RotationsPerSecond))).withTimeout(.01),
-        drivetrain.applyRequest(()-> robotDrive.withVelocityY(LinearVelocity.ofBaseUnits(-5, MetersPerSecond))).withTimeout(0.1),
-        drivetrain.applyRequest(()-> robotDrive.withVelocityY(LinearVelocity.ofBaseUnits(5, MetersPerSecond))).withTimeout(0.1));
+        drivetrain.applyRequest(()-> robotDrive.withVelocityY(LinearVelocity.ofBaseUnits(-2, MetersPerSecond))).withTimeout(0.108),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityY(LinearVelocity.ofBaseUnits(2, MetersPerSecond))).withTimeout(0.1));
       }
       public static Command shakeRotate(){
         return Commands.repeatingSequence(
         drivetrain.applyRequest(()-> robotDrive.withVelocityX(0)).withTimeout(0.01),
         drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(0, RotationsPerSecond))).withTimeout(.01),
         drivetrain.applyRequest(()-> robotDrive.withVelocityY(0)).withTimeout(0.01),
-        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(60, RotationsPerSecond))).withTimeout(.1),
-        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(-60, RotationsPerSecond))).withTimeout(.1)
+        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(10, RotationsPerSecond))).withTimeout(.108),
+        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(-10, RotationsPerSecond))).withTimeout(.1)
         );
       } 
       
       public static Command SpinBeybalde(){
-        return drivetrain.applyRequest(()->robotDrive.withRotationalRate(
-            AngularVelocity.ofBaseUnits(5, RotationsPerSecond)));
+        return Commands.sequence(
+        drivetrain.applyRequest(()-> robotDrive.withVelocityX(0)).withTimeout(0.01),
+        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(0, RotationsPerSecond))).withTimeout(.01),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityY(0)).withTimeout(0.01),
+        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(5, RotationsPerSecond))));
       }
  
 
