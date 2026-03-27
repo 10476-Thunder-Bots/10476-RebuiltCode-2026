@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void pushIntakeOut() {
-        motorKraken.setControl(request.withPosition(-42.5).withVelocity(.25).withSlot(0));
+        motorKraken.setControl(request.withPosition(-40).withVelocity(.25).withSlot(0));
     }
 
     public void pullIntakeIn() {
