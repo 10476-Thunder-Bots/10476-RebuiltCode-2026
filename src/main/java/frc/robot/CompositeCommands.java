@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -26,7 +27,8 @@ public class CompositeCommands {
     static Swivel swivel = Swivel.getInstance();
     static SwerveRequest.RobotCentric robotDrive = new SwerveRequest.RobotCentric();
     static TurretHelper turretHelper = TurretHelper.getInstance();
-    static SwerveRequest.ApplyFieldSpeeds applyFieldSpeeds = new SwerveRequest.ApplyFieldSpeeds();
+    static SwerveRequest.FieldCentricFacingAngle fieldCentric= new SwerveRequest.FieldCentricFacingAngle();
+
     static CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
     public CompositeCommands() {
@@ -50,9 +52,9 @@ public class CompositeCommands {
     }
 
     public static Command shakeBotX() {
-        return Commands.repeatingSequence(
-                drivetrain.applyRequest(() -> robotDrive.withVelocityX(MetersPerSecond.of(-5))).withTimeout(0.1),
-                drivetrain.applyRequest(() -> robotDrive.withVelocityX(MetersPerSecond.of(5))).withTimeout(0.12));
+        return Commands.repeatingSequence(drivetrain.applyRequest(()-> robotDrive.withVelocityY(0)).withTimeout(.01),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityX(LinearVelocity.ofBaseUnits(-5, MetersPerSecond))).withTimeout(0.14),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityX(LinearVelocity.ofBaseUnits(5, MetersPerSecond))).withTimeout(0.1));
     }
 
     public static Command swivelShoot() {
@@ -62,14 +64,15 @@ public class CompositeCommands {
     }
 
       public static Command shakeBotY() {
-        return Commands.repeatingSequence(
-                drivetrain.applyRequest(() -> robotDrive.withVelocityY(MetersPerSecond.of(-5))).withTimeout(0.12),
-                drivetrain.applyRequest(() -> robotDrive.withVelocityY(MetersPerSecond.of(5))).withTimeout(0.12));
+        return Commands.repeatingSequence(drivetrain.applyRequest(()-> robotDrive.withVelocityX(0)).withTimeout(0.01),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityY(LinearVelocity.ofBaseUnits(-5, MetersPerSecond))).withTimeout(0.14),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityY(LinearVelocity.ofBaseUnits(5, MetersPerSecond))).withTimeout(0.1));
       }
       public static Command shakeRotate(){
-        return Commands.repeatingSequence(
-            drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(120, RotationsPerSecond))).withTimeout(.4),
-            drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(-120, RotationsPerSecond))).withTimeout(.42)
+        return Commands.repeatingSequence(drivetrain.applyRequest(()-> robotDrive.withVelocityX(0)).withTimeout(0.01),
+        drivetrain.applyRequest(()-> robotDrive.withVelocityY(0)).withTimeout(0.01),
+            drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(120, RotationsPerSecond))).withTimeout(.26),
+            drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(-120, RotationsPerSecond))).withTimeout(.2)
         );
       } 
       

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -123,6 +124,7 @@ public class RobotContainer {
 
                 joystick.button(4).whileTrue(CompositeCommands.shakeBotX());
                 joystick.button(3).whileTrue(CompositeCommands.shakeBotY());
+                joystick.button(2).whileTrue(CompositeCommands.shakeRotate());
                 joystick.button(13).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.choosePath()));
                 joystick.button(11).toggleOnTrue(drivetrain.runOnce(() -> autoCommands.cancelPaths()));
                 xboxjoystick.button(3).whileTrue(CompositeCommands.runLoader());
