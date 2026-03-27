@@ -86,17 +86,19 @@ public class TurretHelper {
         return thetaI.plus(drivetrain.getState().Pose.getRotation());
     }
 
-    /*public Rotation2d shootAngle(){
-        double x = getTarget().getX();
-        double y = getTarget().getY();
-        Rotation2d theta = new Rotation2d(-Math.atan2(y, x));
-        return theta.plus(drivetrain.getState().Pose.getRotation());
-    }*/
+    /*
+     * public Rotation2d shootAngle(){
+     * double x = getTarget().getX();
+     * double y = getTarget().getY();
+     * Rotation2d theta = new Rotation2d(-Math.atan2(y, x));
+     * return theta.plus(drivetrain.getState().Pose.getRotation());
+     * }
+     */
 
     public AngularVelocity launchSpeed() {
         Distance distanceFromTarget = getDistanceFromTarget();
-        double[] distances = { 24, 36, 52, 56, 75, 78, 89, 107 };
-        double[] speeds = { 2500, 2700, 3200, 3300, 3750, 3900, 4100, 4250 };
+        double[] distances = { 24, 36, 52, 65, 75.5, 78, 89, 107 };
+        double[] speeds = { 2500, 2700, 3200, 3300, 3000, 3900, 4100, 4250 };
         for (int i = 0; i < distances.length - 1; i++) {
             if (distanceFromTarget.in(Inches) < distances[i + 1]) {
                 double slope = (speeds[i + 1] - speeds[i]) / (distances[i + 1] - distances[i]);

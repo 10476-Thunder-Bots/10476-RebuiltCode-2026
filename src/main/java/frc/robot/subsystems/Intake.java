@@ -59,9 +59,11 @@ public class Intake extends SubsystemBase {
         request = new PositionVoltage(0).withSlot(0);
     }
 
-    public void setVacuum(double speed) {
-        motor.set(speed);
-    }
+    /*
+     * public void setVacuum(double speed) {
+     * motor.set(speed);
+     * }
+     */
 
     public void setIntakeMover() {
         motorKraken.set(.1);
