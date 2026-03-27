@@ -73,6 +73,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("run loader", CompositeCommands.runLoader());
                 NamedCommands.registerCommand("run intake", CompositeCommands.intakeOn());
                 NamedCommands.registerCommand("retract intake", CompositeCommands.intakeOff());
+                NamedCommands.registerCommand("beyblade", CompositeCommands.SpinBeybalde());
                 autoChooser = AutoBuilder.buildAutoChooser();
 
                 SmartDashboard.putData("autoChooser", autoChooser);
