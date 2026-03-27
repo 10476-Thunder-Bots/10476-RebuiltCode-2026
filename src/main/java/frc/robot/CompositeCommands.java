@@ -77,8 +77,8 @@ public class CompositeCommands {
         drivetrain.applyRequest(()-> robotDrive.withVelocityX(0)).withTimeout(0.01),
         drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(0, RotationsPerSecond))).withTimeout(.01),
         drivetrain.applyRequest(()-> robotDrive.withVelocityY(0)).withTimeout(0.01),
-        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(10, RotationsPerSecond))).withTimeout(.108),
-        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(-10, RotationsPerSecond))).withTimeout(.1)
+        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(10, RotationsPerSecond))).withTimeout(.10013),
+        drivetrain.applyRequest(()->robotDrive.withRotationalRate(AngularVelocity.ofBaseUnits(-10, RotationsPerSecond))).withTimeout(.100007)
         );
       } 
       
