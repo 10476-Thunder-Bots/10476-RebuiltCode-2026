@@ -12,7 +12,6 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -28,16 +27,18 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.generated.RobotConstants;
+import frc.robot.RobotConstants;
+import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import limelight.Limelight;
 import limelight.networktables.AngularVelocity3d;
 import limelight.networktables.LimelightPoseEstimator;
 import limelight.networktables.LimelightPoseEstimator.EstimationMode;
+import limelight.networktables.LimelightSettings.ImuMode;
 import limelight.networktables.Orientation3d;
+import limelight.networktables.PoseEstimate;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -61,6 +62,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+
+    private static CommandSwerveDrivetrain drivetrain = null;
+
+    public static CommandSwerveDrivetrain getInstance() {
+        if (drivetrain == null) {
+            drivetrain = TunerConstants.createDrivetrain();
+        }
+        return drivetrain;
+    }
 
     /*
      * SysId routine for characterizing translation. This is used to find PID gains
@@ -332,12 +342,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 visionMeasurementStdDevs);
     }
 
-    public Command resetGyro() {
-        return Commands.run(() -> {
-            this.getPigeon2().reset();
-        });
-    }
-
     public void dashbaordValues() {
         /*
          * Just some values I chose mainly to test if it sends to SmartDashboard,
@@ -393,9 +397,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         Vision() {
             leftLimeLight = new Limelight(RobotConstants.LimeLight.LEFT_LIMELIGHT_NAME);
             rightLimeLight = new Limelight(RobotConstants.LimeLight.RIGHT_LIMELIGHT_NAME);
+            leftLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
+            rightLimeLight.getSettings().withImuMode(ImuMode.ExternalImu).save();
             setVisionMeasurementStdDevs(RobotConstants.LimeLight.STD_DEVS);
-            leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
-            rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG2);
+            leftEstimator = leftLimeLight.createPoseEstimator(EstimationMode.MEGATAG1);
+            rightEstimator = rightLimeLight.createPoseEstimator(EstimationMode.MEGATAG1);
         }
 
         public void update() {
@@ -405,20 +411,32 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                     DegreesPerSecond.of(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()));
             orientation = new Orientation3d(getPigeon2().getRotation3d(), angularVelocity);
             leftLimeLight.getSettings().withRobotOrientation(orientation).save();
+
             rightLimeLight.getSettings().withRobotOrientation(orientation).save();
-
-            if (!(leftEstimator.getPoseEstimate().isEmpty())&&!(leftEstimator.getPoseEstimate().get().tagCount == 0)) {
-                addVisionMeasurement(leftEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        leftEstimator.getPoseEstimate().get().timestampSeconds);
-            }
-            if (!(rightEstimator.getPoseEstimate().isEmpty())&&!(rightEstimator.getPoseEstimate().get().tagCount == 0)) {
-                addVisionMeasurement(rightEstimator.getPoseEstimate().get().pose.toPose2d(),
-                        rightEstimator.getPoseEstimate().get().timestampSeconds);
-            }
+            checkVision(leftEstimator);
+            checkVision(rightEstimator);
         }
-    }
 
-    private ChassisSpeeds getRobotRelativeSpeeds() {
-        return null;
+        private boolean checkVision(LimelightPoseEstimator poseEstimator) {
+
+            if (poseEstimator.getPoseEstimate().isEmpty()) {
+                return false;
+            }
+
+            // only get poses that have 2 or more visable tags
+            PoseEstimate poseEstimate = poseEstimator.getPoseEstimate().get();
+
+            if (poseEstimate.tagCount == 0) {
+                return false;
+            }
+            if (poseEstimate.tagCount <= 1) {
+                if (poseEstimate.getAvgTagAmbiguity() > .7 || poseEstimate.avgTagDist > 3) {
+                    return false;
+                }
+            }
+
+            addVisionMeasurement(poseEstimate.pose.toPose2d(), poseEstimate.timestampSeconds);
+            return true;
+        }
     }
 }

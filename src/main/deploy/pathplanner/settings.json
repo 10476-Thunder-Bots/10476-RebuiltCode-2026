@@ -2,8 +2,22 @@
   "robotWidth": 0.9,
   "robotLength": 0.9,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
+  "pathFolders": [
+    "in case of emergency break glass",
+    "VERY IMPORTANT",
+    "past trench 1",
+    "past trench 2",
+    "start",
+    "trench 2 pathfindless%",
+    "trench pathfindless%",
+    "under trench 1",
+    "under trench 2"
+  ],
+  "autoFolders": [
+    "broken hopes and dreams",
+    "average hopes and dreams chad",
+    "average pathfind enjoyer"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
