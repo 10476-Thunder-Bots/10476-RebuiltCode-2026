@@ -19,12 +19,6 @@
                 "data": {
                   "pathName": "top down"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "beyblade"
-                }
               }
             ]
           }
@@ -38,12 +32,6 @@
                 "data": {
                   "pathName": "bottom up"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "beyblade"
-                }
               }
             ]
           }
@@ -52,6 +40,6 @@
     }
   },
   "resetOdom": false,
-  "folder": "new autos to mess with",
+  "folder": null,
   "choreoAuto": false
 }
