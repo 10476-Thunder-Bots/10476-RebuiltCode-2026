@@ -42,7 +42,7 @@ public class Shooter extends SubsystemBase {
         return shooter;
     }
 
-    public Shooter() {
+    private Shooter() {
         smartMotorControllerConfig = new SmartMotorControllerConfig(this)
                 .withControlMode(ControlMode.CLOSED_LOOP)
                 // Feedback Constants (PID Constants)
